@@ -28,7 +28,7 @@ export const Downloads = () => {
               actions={
                 <ActionPanel>
                   <Action
-                    icon={Icon.BlankDocument}
+                    icon={Icon.Info}
                     title="Toggle More Details"
                     onAction={() => setShowingDetail(!showingDetail)}
                   />

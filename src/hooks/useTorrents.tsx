@@ -14,15 +14,7 @@ export const useTorrents = () => {
     });
   };
 
-  const moveToDownloads = (id: string) => {
-    return useFetch<TorrentData>(GET_TORRENTS, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-  };
-
-  return { getTorrents, moveToDownloads };
+  return { getTorrents };
 };
 
 export default useTorrents;

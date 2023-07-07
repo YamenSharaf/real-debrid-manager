@@ -1,12 +1,39 @@
-import { Action, ActionPanel, Icon, List } from "@raycast/api";
-import { useTorrents } from "./hooks";
+import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
+import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
 import { formatFileSize, readTorrentDetails } from "./utils";
+import { TorrentItemData } from "./schema";
 
 export const Torrents = () => {
   const { getTorrents } = useTorrents();
+  const { unRestrictLinks } = useUnrestrict();
   const { data, isLoading } = getTorrents();
   const [showingDetail, setShowingDetail] = useState(false);
+
+  const handleTorrentItemSelect = async (torrent: TorrentItemData) => {
+    const links = torrent?.links ?? [];
+    await showToast({
+      style: Toast.Style.Animated,
+      title: "Sending to Downloads",
+    });
+    const results = await unRestrictLinks(links);
+    const hadErrors = results.find(({ status }) => status === "rejected") as {
+      status: string;
+      reason?: string;
+    };
+    console.log("xyz hadErrors:", hadErrors);
+    if (hadErrors) {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: hadErrors?.reason ?? "Something went wrong",
+      });
+    } else {
+      await showToast({
+        style: Toast.Style.Success,
+        title: "Sent to Downloads",
+      });
+    }
+  };
 
   return (
     <List isLoading={isLoading} isShowingDetail={showingDetail}>
@@ -28,7 +55,13 @@ export const Torrents = () => {
               actions={
                 <ActionPanel>
                   <Action
-                    icon={Icon.BlankDocument}
+                    icon={Icon.Forward}
+                    title="Send to Downloads"
+                    onAction={() => handleTorrentItemSelect(torrent)}
+                  />
+
+                  <Action
+                    icon={Icon.Info}
                     title="Toggle More Details"
                     onAction={() => setShowingDetail(!showingDetail)}
                   />
