@@ -59,20 +59,10 @@ export const Torrents = () => {
                     title="Send to Downloads"
                     onAction={() => handleTorrentItemSelect(torrent)}
                   />
-
                   <Action
                     icon={Icon.Info}
                     title="Toggle More Details"
                     onAction={() => setShowingDetail(!showingDetail)}
-                  />
-                  <Action.OpenInBrowser url={torrent?.status} />
-                  <Action.CopyToClipboard
-                    content={torrent?.status}
-                    title="Copy Torrent Link"
-                    shortcut={{
-                      key: "c",
-                      modifiers: ["cmd"],
-                    }}
                   />
                 </ActionPanel>
               }
