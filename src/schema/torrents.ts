@@ -28,3 +28,4 @@ export type TorrentItemData = {
 };
 
 export type TorrentData = TorrentItemData[];
+export type LinkType = "magnet" | "link";

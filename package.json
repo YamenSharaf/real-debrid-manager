@@ -30,6 +30,13 @@
       "subtitle": "View RD Torrents",
       "description": "",
       "mode": "view"
+    },
+    {
+      "name": "new-download",
+      "title": "New Download",
+      "subtitle": "Add New Torrent or Link to RD",
+      "description": "",
+      "mode": "view"
     }
   ],
   "preferences": [

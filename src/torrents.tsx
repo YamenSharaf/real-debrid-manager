@@ -16,12 +16,11 @@ export const Torrents = () => {
       style: Toast.Style.Animated,
       title: "Sending to Downloads",
     });
-    const results = await unRestrictLinks(links);
+    const results = await unRestrictLinks(links, "link");
     const hadErrors = results.find(({ status }) => status === "rejected") as {
       status: string;
       reason?: string;
     };
-    console.log("xyz hadErrors:", hadErrors);
     if (hadErrors) {
       await showToast({
         style: Toast.Style.Failure,
