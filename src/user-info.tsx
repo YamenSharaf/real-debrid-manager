@@ -1,5 +1,6 @@
 import { Detail } from "@raycast/api";
 import { useUser } from "./hooks";
+import { readUserDetails } from "./utils";
 
 export const UserInfo = () => {
   const { getUserInfo } = useUser();
@@ -14,15 +15,10 @@ export const UserInfo = () => {
     return formattedDate;
   };
 
-  const markdown = `
-# ${userInfo?.username}
-
-![](${userInfo?.avatar})
-`;
   return (
     <Detail
       isLoading={isLoading}
-      markdown={markdown}
+      markdown={userInfo ? readUserDetails(userInfo) : ""}
       metadata={
         <Detail.Metadata>
           <Detail.Metadata.Label title="email" text={userInfo?.email} />
