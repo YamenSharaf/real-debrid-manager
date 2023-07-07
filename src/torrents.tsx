@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
 import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
-import { formatFileSize, readTorrentDetails } from "./utils";
+import { formatFileSize, parseFileType, readTorrentDetails } from "./utils";
 import { TorrentItemData } from "./schema";
 
 export const Torrents = () => {
@@ -49,7 +49,6 @@ export const Torrents = () => {
             <List.Item
               key={torrent.id}
               title={torrent?.filename}
-              subtitle={String(torrent.progress)}
               {...props}
               actions={
                 <ActionPanel>
