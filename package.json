@@ -1,0 +1,64 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "real-debrid",
+  "title": "Real-Debrid",
+  "description": "Real-Debrid client for Raycast\n\nNOT AN OFFICIAL CLIENT",
+  "icon": "command-icon.png",
+  "author": "Yamen",
+  "categories": [
+    "Media"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "user-info",
+      "title": "User Info",
+      "subtitle": "View RD User Info",
+      "description": "",
+      "mode": "view"
+    },
+    {
+      "name": "downloads",
+      "title": "Downloads",
+      "subtitle": "View RD Downloads",
+      "description": "",
+      "mode": "view"
+    },
+    {
+      "name": "torrents",
+      "title": "Torrents",
+      "subtitle": "View RD Torrents",
+      "description": "",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "api_token",
+      "type": "password",
+      "required": true,
+      "title": "Real-Debrid Token",
+      "description": "You can find your token at https://real-debrid.com/apitoken",
+      "placeholder": "Enter your secure token"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.55.0",
+    "@raycast/utils": "^1.8.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "1.0.5",
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.9",
+    "eslint": "^7.32.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
