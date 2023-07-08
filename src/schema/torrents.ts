@@ -35,3 +35,9 @@ export type ErrorResponse = {
   message?: string;
   error_code?: number;
 };
+
+export type UnrestrictLinkResponse = {
+  id: string;
+  uri?: string;
+  host?: string;
+};
