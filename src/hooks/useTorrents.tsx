@@ -1,24 +1,7 @@
-import fetch from "node-fetch";
 import { useFetch } from "@raycast/utils";
-import { DELETE_TORRENT, GET_TORRENTS } from "../api";
+import { GET_TORRENTS, requestTorrentDelete } from "../api";
 import useToken from "./useToken";
-import { ErrorResponse, TorrentData } from "../schema";
-
-const requestTorrentDelete = async (torrent_id: string, token: string) => {
-  const response = await fetch(DELETE_TORRENT(torrent_id), {
-    method: "DELETE",
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    const { message, error } = (await response.json()) as ErrorResponse;
-    throw new Error(`Something went wrong ${error || message || ""}`);
-  }
-
-  return response;
-};
+import { TorrentData } from "../schema";
 
 export const useTorrents = () => {
   const token = useToken();

@@ -1,24 +1,7 @@
-import fetch from "node-fetch";
 import { useFetch } from "@raycast/utils";
-import { DELETE_DOWNLOAD, GET_DOWNLOADS } from "../api";
+import { GET_DOWNLOADS, requestDownloadDelete } from "../api";
 import useToken from "./useToken";
-import { DownloadsData, ErrorResponse } from "../schema";
-
-const requestDownloadDelete = async (download_id: string, token: string) => {
-  const response = await fetch(DELETE_DOWNLOAD(download_id), {
-    method: "DELETE",
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    const { message, error } = (await response.json()) as ErrorResponse;
-    throw new Error(`Something went wrong ${error || message || ""}`);
-  }
-
-  return response;
-};
+import { DownloadsData } from "../schema";
 
 export const useDownloads = () => {
   const token = useToken();

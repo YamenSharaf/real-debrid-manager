@@ -22,7 +22,6 @@ export const Downloads = () => {
         title: "Download deleted",
       });
     } catch (e) {
-      console.log("xyz e:", e);
       await showToast({
         style: Toast.Style.Failure,
         title: "Failed to delete download",
