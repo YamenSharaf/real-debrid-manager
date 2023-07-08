@@ -1,13 +1,13 @@
 import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
 import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
-import { formatFileSize, parseFileType, readTorrentDetails } from "./utils";
+import { formatFileSize, readTorrentDetails } from "./utils";
 import { TorrentItemData } from "./schema";
 
 export const Torrents = () => {
-  const { getTorrents } = useTorrents();
+  const { getTorrents, deleteTorrent } = useTorrents();
   const { unRestrictLinks } = useUnrestrict();
-  const { data, isLoading } = getTorrents();
+  const { data, isLoading, revalidate } = getTorrents();
   const [showingDetail, setShowingDetail] = useState(false);
 
   const handleTorrentItemSelect = async (torrent: TorrentItemData) => {
@@ -30,6 +30,26 @@ export const Torrents = () => {
       await showToast({
         style: Toast.Style.Success,
         title: "Sent to Downloads",
+      });
+    }
+  };
+
+  const handleTorrentDelete = async ({ id }: TorrentItemData) => {
+    await showToast({
+      style: Toast.Style.Animated,
+      title: "Deleting torrent...",
+    });
+    try {
+      await deleteTorrent(id);
+      revalidate();
+      await showToast({
+        style: Toast.Style.Success,
+        title: "Torrent deleted",
+      });
+    } catch {
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to delete torrent",
       });
     }
   };
@@ -61,6 +81,15 @@ export const Torrents = () => {
                     icon={Icon.Info}
                     title="Toggle More Details"
                     onAction={() => setShowingDetail(!showingDetail)}
+                  />
+                  <Action
+                    shortcut={{
+                      key: "backspace",
+                      modifiers: ["cmd"],
+                    }}
+                    icon={Icon.Trash}
+                    title="Delete Torrent"
+                    onAction={() => handleTorrentDelete(torrent)}
                   />
                 </ActionPanel>
               }

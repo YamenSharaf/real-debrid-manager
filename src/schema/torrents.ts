@@ -29,3 +29,9 @@ export type TorrentItemData = {
 
 export type TorrentData = TorrentItemData[];
 export type LinkType = "magnet" | "link";
+
+export type ErrorResponse = {
+  error?: string;
+  message?: string;
+  error_code?: number;
+};

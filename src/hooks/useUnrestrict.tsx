@@ -1,13 +1,7 @@
 import fetch from "node-fetch";
 import { GET_STATUS, SELECT_FILES, UNRESTRICT_LINK, UNRESTRICT_MAGNET } from "../api";
 import useToken from "./useToken";
-import { LinkType } from "../schema";
-
-type ErrorResponse = {
-  error?: string;
-  message?: string;
-  error_code?: number;
-};
+import { ErrorResponse, LinkType } from "../schema";
 
 const requestUnrestrict = async (link: string, token: string, type: LinkType = "link") => {
   const endpoint = type === "link" ? UNRESTRICT_LINK : UNRESTRICT_MAGNET;

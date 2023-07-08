@@ -6,3 +6,4 @@ export const GET_STATUS = (torrent_id: string) => `${API_BASE_URL}/torrents/info
 export const SELECT_FILES = (torrent_id: string) => `${API_BASE_URL}/torrents/selectFiles/${torrent_id}`;
 export const UNRESTRICT_LINK = `${API_BASE_URL}/unrestrict/link`;
 export const UNRESTRICT_MAGNET = `${API_BASE_URL}/torrents/addMagnet`;
+export const DELETE_TORRENT = (torrent_id: string) => `${API_BASE_URL}/torrents/delete/${torrent_id}`;
