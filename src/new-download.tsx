@@ -19,6 +19,10 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
     popToRoot();
   };
 
+  const handleFailure = (error: string) => {
+    showToast(Toast.Style.Failure, error);
+  };
+
   const handleSubmit = async ({ link }: FormValues) => {
     const { type, valid } = validateLinkInput(link);
     if (!valid || !type) {
@@ -27,16 +31,20 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
     }
     showToast(Toast.Style.Animated, "Sending link to RD");
     setLinkError("");
-    const data = (await unRestrictLink(link, type)) as { id?: string };
-    if (data?.id) {
-      const torrentData = (await getTorrentStatus(data.id)) as TorrentItemData;
-      if (torrentData.status === "waiting_files_selection") {
-        await selectTorrentFiles(torrentData.id, "all");
+    try {
+      const data = (await unRestrictLink(link, type)) as { id?: string };
+      if (data?.id) {
+        const torrentData = (await getTorrentStatus(data.id)) as TorrentItemData;
+        if (torrentData.status === "waiting_files_selection") {
+          await selectTorrentFiles(torrentData.id, "all");
+          handleSuccess();
+          return;
+        }
         handleSuccess();
         return;
       }
-      handleSuccess();
-      return;
+    } catch (error) {
+      handleFailure(error as string);
     }
   };
   return (
