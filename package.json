@@ -6,7 +6,8 @@
   "icon": "command-icon.png",
   "author": "Yamen",
   "categories": [
-    "Media"
+    "Media",
+    "Data"
   ],
   "license": "MIT",
   "commands": [
@@ -14,28 +15,28 @@
       "name": "user-info",
       "title": "User Info",
       "subtitle": "View RD User Info",
-      "description": "",
+      "description": "View logged-in user info",
       "mode": "view"
     },
     {
       "name": "downloads",
       "title": "Downloads",
       "subtitle": "View RD Downloads",
-      "description": "",
+      "description": "View Real-Debrid downloads",
       "mode": "view"
     },
     {
       "name": "torrents",
       "title": "Torrents",
       "subtitle": "View RD Torrents",
-      "description": "",
+      "description": "View Real-Debrid torrents",
       "mode": "view"
     },
     {
       "name": "new-download",
       "title": "New Download",
       "subtitle": "Add New Torrent or Link to RD",
-      "description": "",
+      "description": "Add New Torrent or Link to Real-Debrid",
       "mode": "view"
     }
   ],

@@ -1,12 +1,34 @@
-import { Action, ActionPanel, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
 import { useDownloads } from "./hooks";
 import { useState } from "react";
 import { formatFileSize, parseFileType, readDownloadDetails } from "./utils";
+import { DownloadFileData } from "./schema";
 
 export const Downloads = () => {
-  const { getDownloads } = useDownloads();
-  const { data, isLoading } = getDownloads();
+  const { getDownloads, deleteDownload } = useDownloads();
+  const { data, isLoading, revalidate } = getDownloads();
   const [showingDetail, setShowingDetail] = useState(false);
+
+  const handleDownloadDelete = async ({ id }: DownloadFileData) => {
+    await showToast({
+      style: Toast.Style.Animated,
+      title: "Deleting download...",
+    });
+    try {
+      await deleteDownload(id);
+      revalidate();
+      await showToast({
+        style: Toast.Style.Success,
+        title: "Download deleted",
+      });
+    } catch (e) {
+      console.log("xyz e:", e);
+      await showToast({
+        style: Toast.Style.Failure,
+        title: "Failed to delete download",
+      });
+    }
+  };
 
   return (
     <List isLoading={isLoading} isShowingDetail={showingDetail}>
@@ -40,6 +62,15 @@ export const Downloads = () => {
                       key: "c",
                       modifiers: ["cmd"],
                     }}
+                  />
+                  <Action
+                    shortcut={{
+                      key: "backspace",
+                      modifiers: ["cmd"],
+                    }}
+                    icon={Icon.Trash}
+                    title="Delete Download"
+                    onAction={() => handleDownloadDelete(download)}
                   />
                 </ActionPanel>
               }
