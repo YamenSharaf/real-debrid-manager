@@ -49,53 +49,58 @@ export const Downloads = () => {
               {...props}
               actions={
                 <ActionPanel>
-                  <Action
-                    icon={Icon.Info}
-                    title="Toggle More Details"
-                    onAction={() => setShowingDetail(!showingDetail)}
-                  />
-                  <Action.OpenInBrowser url={download?.download} />
-                  <Action.CopyToClipboard
-                    content={download?.download}
-                    title="Copy Download Link"
-                    shortcut={{
-                      key: "c",
-                      modifiers: ["cmd"],
-                    }}
-                  />
-                  {isExternalHost(download) && (
+                  <ActionPanel.Section>
+                    <Action
+                      icon={Icon.Info}
+                      title="Toggle More Details"
+                      onAction={() => setShowingDetail(!showingDetail)}
+                    />
+                    <Action.OpenInBrowser url={download?.download} />
                     <Action.CopyToClipboard
-                      content={download?.link}
-                      title="Copy Original Link"
+                      content={download?.download}
+                      title="Copy Download Link"
                       shortcut={{
-                        key: ".",
+                        key: "c",
                         modifiers: ["cmd"],
                       }}
                     />
-                  )}
-                  {isDownloadItemPlayable(download) &&
-                    supportedMediaPlayers.map((player) => (
-                      <Action
+                    {isExternalHost(download) && (
+                      <Action.CopyToClipboard
+                        content={download?.link}
+                        title="Copy Original Link"
                         shortcut={{
-                          key: player.key as Keyboard.KeyEquivalent,
-                          modifiers: ["opt", "ctrl"],
+                          key: ".",
+                          modifiers: ["cmd"],
                         }}
-                        key={player.key}
-                        icon={Icon.Play}
-                        title={`Play with ${player.name}`}
-                        onAction={() => playWithMediaPlayer(download.download, player)}
                       />
-                    ))}
-
-                  <Action
-                    shortcut={{
-                      key: "backspace",
-                      modifiers: ["cmd"],
-                    }}
-                    icon={Icon.Trash}
-                    title="Delete Download"
-                    onAction={() => handleDownloadDelete(download)}
-                  />
+                    )}
+                  </ActionPanel.Section>
+                  <ActionPanel.Section>
+                    {isDownloadItemPlayable(download) &&
+                      supportedMediaPlayers.map((player) => (
+                        <Action
+                          shortcut={{
+                            key: player.key as Keyboard.KeyEquivalent,
+                            modifiers: ["opt", "ctrl"],
+                          }}
+                          key={player.key}
+                          icon={Icon.Play}
+                          title={`Play with ${player.name}`}
+                          onAction={() => playWithMediaPlayer(download.download, player)}
+                        />
+                      ))}
+                  </ActionPanel.Section>
+                  <ActionPanel.Section>
+                    <Action
+                      shortcut={{
+                        key: "backspace",
+                        modifiers: ["cmd"],
+                      }}
+                      icon={Icon.Trash}
+                      title="Delete Download"
+                      onAction={() => handleDownloadDelete(download)}
+                    />
+                  </ActionPanel.Section>
                 </ActionPanel>
               }
             />
