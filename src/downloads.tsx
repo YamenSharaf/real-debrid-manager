@@ -1,5 +1,5 @@
-import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
-import { useDownloads } from "./hooks";
+import { Action, ActionPanel, Icon, Keyboard, List, Toast, showToast } from "@raycast/api";
+import { useDownloads, useMediaPlayer } from "./hooks";
 import { useState } from "react";
 import { formatFileSize, isExternalHost, parseFileType, readDownloadDetails } from "./utils";
 import { DownloadFileData } from "./schema";
@@ -8,6 +8,7 @@ export const Downloads = () => {
   const { getDownloads, deleteDownload } = useDownloads();
   const { data, isLoading, revalidate } = getDownloads();
   const [showingDetail, setShowingDetail] = useState(false);
+  const { supportedMediaPlayers, playWithMediaPlayer, isDownloadItemPlayable } = useMediaPlayer();
 
   const handleDownloadDelete = async ({ id }: DownloadFileData) => {
     await showToast({
@@ -67,11 +68,24 @@ export const Downloads = () => {
                       content={download?.link}
                       title="Copy Original Link"
                       shortcut={{
-                        key: "c",
-                        modifiers: ["cmd", "opt"],
+                        key: ".",
+                        modifiers: ["cmd"],
                       }}
                     />
                   )}
+                  {isDownloadItemPlayable(download) &&
+                    supportedMediaPlayers.map((player) => (
+                      <Action
+                        shortcut={{
+                          key: player.key as Keyboard.KeyEquivalent,
+                          modifiers: ["opt", "ctrl"],
+                        }}
+                        key={player.key}
+                        icon={Icon.Play}
+                        title={`Play with ${player.name}`}
+                        onAction={() => playWithMediaPlayer(download.download, player)}
+                      />
+                    ))}
 
                   <Action
                     shortcut={{
