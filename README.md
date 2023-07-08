@@ -1,9 +1,8 @@
-# Real-Debrid
+# Real-Debrid Manager
 
 Real-Debrid client for Raycast
-NOT AN OFFICIAL CLIENT
 
-[Real-Debrid](https://real-debrid.com) is a web service for downloading torrents remotely and unlocking some hoster links
+[Real-Debrid](https://real-debrid.com) is a web service for downloading torrents remotely and unlocking some hoster links.
 
 # Getting your token
 
@@ -15,17 +14,17 @@ You can obtain your token by going to [your account](https://real-debrid.com/api
 
 - View and search Downloads
 - Unrestricting hoster links for [supported hosters](https://real-debrid.com/compare).
-- Copy direct download links
-- Copy original hoster file links
-- Open media files with installed media players ([IINA](https://iina.io/)/ [VLC](https://www.videolan.org/vlc/download-macosx.html) recommended)
-- Delete downloads
+- Copy direct download links.
+- Copy original hoster file links.
+- Open media files with installed media players ([IINA](https://iina.io/)/ [VLC](https://www.videolan.org/vlc/download-macosx.html) recommended).
+- Delete downloads.
 
 ### Torrents
 
-- View and search Torrents
-- Add new torrent via magnet links (`.torrent` upload support planned)
-- Send torrent files to Downloads
-- Delete torrents
+- View and search Torrents.
+- Add new torrent via magnet links (`.torrent` upload support planned).
+- Send torrent files to Downloads.
+- Delete torrents.
 
 ### User Info
 
