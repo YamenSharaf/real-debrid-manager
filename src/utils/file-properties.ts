@@ -1,4 +1,4 @@
-import { DownloadFileData, TorrentItemData } from "../schema";
+import { DownloadFileData } from "../schema";
 
 export const formatFileSize = (sizeInBytes: number): string => {
   if (!sizeInBytes) {
