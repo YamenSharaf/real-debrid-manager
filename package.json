@@ -16,28 +16,32 @@
       "title": "User Info",
       "subtitle": "View RD User Info",
       "description": "View logged-in user info",
-      "mode": "view"
+      "mode": "view",
+      "icon": "command-icon.png"
     },
     {
       "name": "downloads",
       "title": "Downloads",
       "subtitle": "View RD Downloads",
       "description": "View Real-Debrid downloads",
-      "mode": "view"
+      "mode": "view",
+      "icon": "command-icon.png"
     },
     {
       "name": "torrents",
       "title": "Torrents",
       "subtitle": "View RD Torrents",
       "description": "View Real-Debrid torrents",
-      "mode": "view"
+      "mode": "view",
+      "icon": "command-icon.png"
     },
     {
       "name": "new-download",
       "title": "New Download",
       "subtitle": "Add New Torrent or Link to RD",
       "description": "Add New Torrent or Link to Real-Debrid",
-      "mode": "view"
+      "mode": "view",
+      "icon": "command-icon.png"
     }
   ],
   "preferences": [
