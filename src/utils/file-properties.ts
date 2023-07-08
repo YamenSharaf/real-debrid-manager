@@ -13,7 +13,7 @@ export const formatFileSize = (sizeInBytes: number): string => {
 };
 
 export const formatGenericProperty = <T>(value: T): string => {
-  if (!value) return "Unknown";
+  if (!value) return "*Unknown*";
   return String(value);
 };
 
@@ -29,4 +29,8 @@ export const parseFileType = (fileData: DownloadFileData) => {
   if (extension_from_file_name) return extension_from_file_name;
 
   return "unknown";
+};
+
+export const isExternalHost = (download: DownloadFileData) => {
+  return download?.host !== "real-debrid.com";
 };

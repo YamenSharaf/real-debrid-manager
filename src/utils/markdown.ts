@@ -1,4 +1,4 @@
-import { formatDateTime, formatFileSize, formatGenericProperty, formatProgress } from ".";
+import { formatDateTime, formatFileSize, formatGenericProperty, formatProgress, isExternalHost } from ".";
 import { DownloadFileData, TorrentItemData, UserData } from "../schema";
 
 export const readUserDetails = (details: UserData) => {
@@ -37,9 +37,11 @@ export const readDownloadDetails = (details: DownloadFileData) => {
 
 **Size:** ${formatFileSize(details?.filesize)}
 
+**Download:** ${formatGenericProperty(details.download)}
+
 **Host:** ${formatGenericProperty(details.host)}
 
-**Download:** ${formatGenericProperty(details.download)}
+**Original Link:** ${isExternalHost(details) ? details?.link : formatGenericProperty("")}
 
 **Time Added:** ${formatDateTime(details.generated)}
 

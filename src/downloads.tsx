@@ -1,7 +1,7 @@
 import { Action, ActionPanel, Icon, List, Toast, showToast } from "@raycast/api";
 import { useDownloads } from "./hooks";
 import { useState } from "react";
-import { formatFileSize, parseFileType, readDownloadDetails } from "./utils";
+import { formatFileSize, isExternalHost, parseFileType, readDownloadDetails } from "./utils";
 import { DownloadFileData } from "./schema";
 
 export const Downloads = () => {
@@ -62,6 +62,17 @@ export const Downloads = () => {
                       modifiers: ["cmd"],
                     }}
                   />
+                  {isExternalHost(download) && (
+                    <Action.CopyToClipboard
+                      content={download?.link}
+                      title="Copy Original Link"
+                      shortcut={{
+                        key: "c",
+                        modifiers: ["cmd", "opt"],
+                      }}
+                    />
+                  )}
+
                   <Action
                     shortcut={{
                       key: "backspace",
