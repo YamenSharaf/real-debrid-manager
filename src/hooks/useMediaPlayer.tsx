@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { DownloadFileData, SupportedMediaPlayer } from "../schema";
 import { parseFileType } from "../utils";
 
-const SUPPORTED_PLAYERS = /(iina|vlc)/i;
+const SUPPORTED_PLAYERS = /(iina|vlc|movist|quicktime)/i;
 const SUPPORTED_FILE_TYPES = /(audio|video)/;
 
 export const useMediaPlayer = () => {
