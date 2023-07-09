@@ -1,6 +1,6 @@
 import { Form, ActionPanel, Action, popToRoot, LaunchProps, showToast, Toast, useNavigation } from "@raycast/api";
 import { validateLinkInput } from "./utils/validation";
-import { useUnrestrict } from "./hooks";
+import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
 import { TorrentItemDataExtended, UnrestrictLinkResponse } from "./schema";
 import { isTorrentPendingFileSelection, isUnrestrictedHosterLink, isUnrestrictedTorrent } from "./utils";
@@ -14,7 +14,8 @@ interface FormValues {
 export default function Command(props: LaunchProps<{ draftValues: FormValues }>) {
   const { push } = useNavigation();
   const { draftValues } = props;
-  const { unRestrictLink, getTorrentStatus } = useUnrestrict();
+  const { unRestrictLink } = useUnrestrict();
+  const { getTorrentDetails } = useTorrents();
   const [linkError, setLinkError] = useState("");
 
   const handleSuccess = () => {
@@ -27,7 +28,7 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
   };
 
   const handleUnrestrictedTorrent = async (response: UnrestrictLinkResponse) => {
-    const torrentData = (await getTorrentStatus(response?.id)) as TorrentItemDataExtended;
+    const torrentData = (await getTorrentDetails(response?.id)) as TorrentItemDataExtended;
     if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
       push(<TorrentFileSelection torrentItemData={torrentData} />);
       showToast(Toast.Style.Success, "Select files for Download");

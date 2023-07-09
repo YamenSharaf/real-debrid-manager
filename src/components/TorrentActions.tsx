@@ -12,8 +12,8 @@ type TorrentActionsProp = {
 
 export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, revalidate, popOnSuccess }) => {
   const { pop, push } = useNavigation();
-  const { deleteTorrent } = useTorrents();
-  const { unRestrictLinks, getTorrentStatus } = useUnrestrict();
+  const { deleteTorrent, getTorrentDetails } = useTorrents();
+  const { unRestrictLinks } = useUnrestrict();
 
   const handleTorrentItemSelect = async (torrentItem: TorrentItemData) => {
     const links = torrentItem?.links ?? [];
@@ -63,7 +63,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
 
   const handleFileSelectionRequest = async (id: string) => {
     try {
-      const torrentDetails = (await getTorrentStatus(id)) as TorrentItemDataExtended;
+      const torrentDetails = (await getTorrentDetails(id)) as TorrentItemDataExtended;
       push(<TorrentFileSelection torrentItemData={torrentDetails} revalidate={revalidate} />);
     } catch (error) {
       await showToast(Toast.Style.Failure, "Failed to Select Files");
