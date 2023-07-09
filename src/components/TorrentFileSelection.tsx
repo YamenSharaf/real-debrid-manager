@@ -1,14 +1,18 @@
 import { useReducer } from "react";
-import { Action, ActionPanel, Icon, List } from "@raycast/api";
+import { Action, ActionPanel, Icon, List, Toast, popToRoot, showToast } from "@raycast/api";
 import { TorrentFile, TorrentItemDataExtended } from "../schema";
 import { formatFileSize } from "../utils";
 import { reducer as fileSelectionReducer } from "../reducers";
+import { useUnrestrict } from "../hooks";
 
 type TorrentFileSelectionProps = {
   torrentItemData: TorrentItemDataExtended;
+  revalidate: () => void;
 };
 
-export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torrentItemData }) => {
+export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torrentItemData, revalidate }) => {
+  const { selectTorrentFiles } = useUnrestrict();
+
   const [torrentFiles, dispatch] = useReducer(fileSelectionReducer, torrentItemData?.files as TorrentFile[]);
 
   const handleFileSelection = (id: number) => {
@@ -21,10 +25,17 @@ export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torr
     dispatch({ type: "deselect_all" });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const selectedFiles = torrentFiles.filter((file) => file.selected);
     const files = selectedFiles.map((file) => file.id).join(",");
-    console.log("xyz files", files);
+    try {
+      await selectTorrentFiles(torrentItemData.id, files);
+      await showToast(Toast.Style.Success, "Files Selected");
+      revalidate();
+      popToRoot();
+    } catch (error) {
+      await showToast(Toast.Style.Failure, "Failed to select files" + error);
+    }
   };
 
   return (

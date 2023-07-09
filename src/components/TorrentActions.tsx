@@ -1,6 +1,8 @@
 import { Action, ActionPanel, Icon, Toast, showToast, useNavigation } from "@raycast/api";
-import { TorrentItemData } from "../schema";
+import { TorrentItemData, TorrentItemDataExtended } from "../schema";
 import { useTorrents, useUnrestrict } from "../hooks";
+import TorrentFileSelection from "./TorrentFileSelection";
+import { isTorrentCompleted, isTorrentPendingFileSelection } from "../utils";
 
 type TorrentActionsProp = {
   torrentItem: TorrentItemData;
@@ -8,9 +10,9 @@ type TorrentActionsProp = {
 };
 
 export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, revalidate }) => {
-  const { pop } = useNavigation();
+  const { pop, push } = useNavigation();
   const { deleteTorrent } = useTorrents();
-  const { unRestrictLinks } = useUnrestrict();
+  const { unRestrictLinks, getTorrentStatus } = useUnrestrict();
 
   const handleTorrentItemSelect = async (torrentItem: TorrentItemData) => {
     const links = torrentItem?.links ?? [];
@@ -58,9 +60,27 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
     }
   };
 
+  const handleFileSelectionRequest = async (id: string) => {
+    try {
+      const torrentDetails = (await getTorrentStatus(id)) as TorrentItemDataExtended;
+      push(<TorrentFileSelection torrentItemData={torrentDetails} revalidate={revalidate} />);
+    } catch {
+      console.log("ERROR");
+    }
+  };
+
   return (
     <ActionPanel.Section>
-      <Action icon={Icon.Forward} title="Send to Downloads" onAction={() => handleTorrentItemSelect(torrentItem)} />
+      {isTorrentPendingFileSelection(torrentItem.status) && (
+        <Action
+          icon={Icon.AirplaneFilled}
+          title="Select Files"
+          onAction={() => handleFileSelectionRequest(torrentItem.id)}
+        />
+      )}
+      {isTorrentCompleted(torrentItem.status) && (
+        <Action icon={Icon.Forward} title="Send to Downloads" onAction={() => handleTorrentItemSelect(torrentItem)} />
+      )}
       <Action
         shortcut={{
           key: "backspace",

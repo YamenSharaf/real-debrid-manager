@@ -1,4 +1,4 @@
-import { UnrestrictLinkResponse } from "../schema";
+import { TorrentStatus, UnrestrictLinkResponse } from "../schema";
 
 export const formatProgress = (progress: number) => {
   if (!progress) return "Unknown";
@@ -13,4 +13,11 @@ export const isUnrestrictedTorrent = (response: UnrestrictLinkResponse) => {
 
 export const isUnrestrictedHosterLink = (response: UnrestrictLinkResponse) => {
   return Boolean(response?.id && response?.host);
+};
+
+export const isTorrentPendingFileSelection = (torrentStatus: TorrentStatus) => {
+  return torrentStatus === "magnet_conversion" || torrentStatus === "waiting_files_selection";
+};
+export const isTorrentCompleted = (torrentStatus: TorrentStatus) => {
+  return torrentStatus === "downloaded" || torrentStatus === "uploading";
 };
