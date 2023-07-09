@@ -53,18 +53,18 @@ export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torr
           actions={
             <ActionPanel>
               <Action
-                icon={torrentFile?.selected ? Icon.Circle : Icon.Checkmark}
                 title={torrentFile?.selected ? "Deselect" : "Select"}
+                icon={torrentFile?.selected ? Icon.Circle : Icon.Checkmark}
                 onAction={() => handleFileSelection(torrentFile.id)}
               />
-              <Action icon={Icon.ArrowRightCircleFilled} title="Submit" onAction={handleSubmit} />
+              <Action icon={Icon.Bolt} title="Confirm Selection" onAction={handleSubmit} />
               <Action
-                icon={Icon.ArrowRightCircleFilled}
+                title={torrentFiles?.some((file) => file?.selected) ? "Deselect All" : "Select All"}
+                icon={torrentFiles?.some((file) => file?.selected) ? Icon.Circle : Icon.CheckCircle}
                 shortcut={{
                   key: "a",
-                  modifiers: ["cmd", "ctrl"],
+                  modifiers: ["opt", "ctrl"],
                 }}
-                title={torrentFiles?.some((file) => file?.selected) ? "Deselect All" : "Select All"}
                 onAction={torrentFiles?.some((file) => file?.selected) ? handleDeselectAll : handleSelectAll}
               />
             </ActionPanel>

@@ -30,6 +30,7 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
     const torrentData = (await getTorrentStatus(response?.id)) as TorrentItemDataExtended;
     if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
       push(<TorrentFileSelection torrentItemData={torrentData} />);
+      showToast(Toast.Style.Success, "Select files for Download");
     } else {
       handleSuccess();
       return;

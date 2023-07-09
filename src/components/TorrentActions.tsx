@@ -74,13 +74,25 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
     <ActionPanel.Section>
       {isTorrentPendingFileSelection(torrentItem.status) && (
         <Action
-          icon={Icon.AirplaneFilled}
           title="Select Files"
+          icon={Icon.List}
+          shortcut={{
+            key: "f",
+            modifiers: ["opt", "ctrl"],
+          }}
           onAction={() => handleFileSelectionRequest(torrentItem.id)}
         />
       )}
       {isTorrentCompleted(torrentItem.status) && (
-        <Action icon={Icon.Forward} title="Send to Downloads" onAction={() => handleTorrentItemSelect(torrentItem)} />
+        <Action
+          title="Send to Downloads"
+          shortcut={{
+            key: "d",
+            modifiers: ["ctrl", "opt"],
+          }}
+          icon={Icon.Download}
+          onAction={() => handleTorrentItemSelect(torrentItem)}
+        />
       )}
       <Action
         shortcut={{

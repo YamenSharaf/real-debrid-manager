@@ -1,4 +1,13 @@
-import { formatDateTime, formatFileSize, formatGenericProperty, formatProgress, isExternalHost } from ".";
+import {
+  TORRENT_STATUS_MAP,
+  formatDateTime,
+  formatFileSize,
+  formatGenericProperty,
+  formatProgress,
+  isExternalHost,
+  isTorrentCompleted,
+  isTorrentPendingFileSelection,
+} from ".";
 import { DownloadFileData, TorrentItemData, UserData } from "../schema";
 
 export const readUserDetails = (details: UserData) => {
@@ -19,13 +28,17 @@ export const readTorrentDetails = (details: TorrentItemData) => {
 
 **Host:** ${formatGenericProperty(details.host)}
 
-**Downloads:** ${formatGenericProperty(details.links[0])}
-
 **Time Added:** ${formatDateTime(details.added)}
 
-**Status:** ${formatGenericProperty(details?.status)}
+**Status:** ${TORRENT_STATUS_MAP[details?.status].title}
 
-💡 To download the file(s), move torrent to downloads first.
+${isTorrentCompleted(details.status) ? `💡 To download the file(s), move torrent to downloads first.` : ""}
+
+${
+  isTorrentPendingFileSelection(details.status)
+    ? `💡 Files must be selected and downloaded before moved to downloads`
+    : ""
+}
 `;
 };
 
