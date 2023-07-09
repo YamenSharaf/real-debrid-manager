@@ -7,7 +7,7 @@ import { useUnrestrict } from "../hooks";
 
 type TorrentFileSelectionProps = {
   torrentItemData: TorrentItemDataExtended;
-  revalidate: () => void;
+  revalidate?: () => void;
 };
 
 export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torrentItemData, revalidate }) => {
@@ -31,7 +31,7 @@ export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torr
     try {
       await selectTorrentFiles(torrentItemData.id, files);
       await showToast(Toast.Style.Success, "Files Selected");
-      revalidate();
+      revalidate && revalidate();
       popToRoot();
     } catch (error) {
       await showToast(Toast.Style.Failure, "Failed to select files" + error);
@@ -53,8 +53,8 @@ export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torr
           actions={
             <ActionPanel>
               <Action
-                icon={torrentFile.selected ? Icon.Circle : Icon.Checkmark}
-                title={torrentFile.selected ? "Deselect" : "Select"}
+                icon={torrentFile?.selected ? Icon.Circle : Icon.Checkmark}
+                title={torrentFile?.selected ? "Deselect" : "Select"}
                 onAction={() => handleFileSelection(torrentFile.id)}
               />
               <Action icon={Icon.ArrowRightCircleFilled} title="Submit" onAction={handleSubmit} />
@@ -64,8 +64,8 @@ export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torr
                   key: "a",
                   modifiers: ["cmd", "ctrl"],
                 }}
-                title={torrentFiles.some((file) => file.selected) ? "Deselect All" : "Select All"}
-                onAction={torrentFiles.some((file) => file.selected) ? handleDeselectAll : handleSelectAll}
+                title={torrentFiles?.some((file) => file?.selected) ? "Deselect All" : "Select All"}
+                onAction={torrentFiles?.some((file) => file?.selected) ? handleDeselectAll : handleSelectAll}
               />
             </ActionPanel>
           }

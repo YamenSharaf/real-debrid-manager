@@ -1,9 +1,10 @@
-import { Form, ActionPanel, Action, popToRoot, LaunchProps, showToast, Toast } from "@raycast/api";
+import { Form, ActionPanel, Action, popToRoot, LaunchProps, showToast, Toast, useNavigation } from "@raycast/api";
 import { validateLinkInput } from "./utils/validation";
 import { useUnrestrict } from "./hooks";
 import { useState } from "react";
-import { TorrentItemData, UnrestrictLinkResponse } from "./schema";
-import { isUnrestrictedHosterLink, isUnrestrictedTorrent } from "./utils";
+import { TorrentItemDataExtended, UnrestrictLinkResponse } from "./schema";
+import { isTorrentPendingFileSelection, isUnrestrictedHosterLink, isUnrestrictedTorrent } from "./utils";
+import { TorrentFileSelection } from "./components";
 
 interface FormValues {
   link: string;
@@ -11,8 +12,9 @@ interface FormValues {
 }
 
 export default function Command(props: LaunchProps<{ draftValues: FormValues }>) {
+  const { push } = useNavigation();
   const { draftValues } = props;
-  const { unRestrictLink, getTorrentStatus, selectTorrentFiles } = useUnrestrict();
+  const { unRestrictLink, getTorrentStatus } = useUnrestrict();
   const [linkError, setLinkError] = useState("");
 
   const handleSuccess = () => {
@@ -25,14 +27,13 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
   };
 
   const handleUnrestrictedTorrent = async (response: UnrestrictLinkResponse) => {
-    const torrentData = (await getTorrentStatus(response?.id)) as TorrentItemData;
-    if (torrentData.status === "waiting_files_selection") {
-      await selectTorrentFiles(torrentData?.id, "all");
+    const torrentData = (await getTorrentStatus(response?.id)) as TorrentItemDataExtended;
+    if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
+      push(<TorrentFileSelection torrentItemData={torrentData} />);
+    } else {
       handleSuccess();
       return;
     }
-    handleSuccess();
-    return;
   };
 
   const handleSubmit = async ({ link }: FormValues) => {

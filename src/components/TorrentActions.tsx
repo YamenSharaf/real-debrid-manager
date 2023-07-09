@@ -7,9 +7,10 @@ import { isTorrentCompleted, isTorrentPendingFileSelection } from "../utils";
 type TorrentActionsProp = {
   torrentItem: TorrentItemData;
   revalidate: () => void;
+  popOnSuccess?: boolean;
 };
 
-export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, revalidate }) => {
+export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, revalidate, popOnSuccess }) => {
   const { pop, push } = useNavigation();
   const { deleteTorrent } = useTorrents();
   const { unRestrictLinks, getTorrentStatus } = useUnrestrict();
@@ -51,7 +52,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
         style: Toast.Style.Success,
         title: "Torrent deleted",
       });
-      pop();
+      popOnSuccess && pop();
     } catch {
       await showToast({
         style: Toast.Style.Failure,

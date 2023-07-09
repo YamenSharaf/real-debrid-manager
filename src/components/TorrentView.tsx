@@ -14,7 +14,7 @@ export const TorrentView: React.FC<TorrentViewProps> = ({ torrentItem, revalidat
       markdown={readTorrentDetails(torrentItem)}
       actions={
         <ActionPanel>
-          <TorrentActions torrentItem={torrentItem} revalidate={revalidate} />
+          <TorrentActions torrentItem={torrentItem} revalidate={revalidate} popOnSuccess />
         </ActionPanel>
       }
     />
