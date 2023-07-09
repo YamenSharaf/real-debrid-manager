@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Icon, Keyboard, Toast, showToast } from "@raycast/api";
+import { Action, ActionPanel, Icon, Keyboard, Toast, showToast, useNavigation } from "@raycast/api";
 import { DownloadFileData } from "../schema";
 import { isExternalHost } from "../utils";
 import { useDownloads, useMediaPlayer } from "../hooks";
@@ -9,6 +9,8 @@ type DownloadActionsProp = {
 };
 
 export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, revalidate }) => {
+  const { pop } = useNavigation();
+
   const { supportedMediaPlayers, playWithMediaPlayer, isDownloadItemPlayable } = useMediaPlayer();
   const { deleteDownload } = useDownloads();
 
@@ -24,6 +26,7 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
         style: Toast.Style.Success,
         title: "Download deleted",
       });
+      pop();
     } catch (e) {
       await showToast({
         style: Toast.Style.Failure,
@@ -83,3 +86,5 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
     </>
   );
 };
+
+export default DownloadActions;
