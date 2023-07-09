@@ -21,7 +21,7 @@
     },
     {
       "name": "new-download-from-clipboard",
-      "title": "New Download from Clipboard",
+      "title": "New Download From Clipboard",
       "subtitle": "Add New Torrent or Link to RD",
       "description": "Add New Torrent or Link to Real-Debrid from clipboard",
       "mode": "no-view",
