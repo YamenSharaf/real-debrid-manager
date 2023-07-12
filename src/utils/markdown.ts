@@ -93,6 +93,6 @@ ${
     : ""
 }
 
-**Filename:** ${downloadItem.filename}
+${downloadItem.filename}
 `;
 };

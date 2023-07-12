@@ -48,10 +48,18 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
                 }}
                 key={player.key}
                 icon={Icon.Play}
-                title={`Stream with ${player.name}`}
+                title={`Stream in ${player.name}`}
                 onAction={() => playWithMediaPlayer(downloadItem.download, player)}
               />
             ))}
+            <Action.OpenInBrowser
+              shortcut={{
+                key: "'",
+                modifiers: ["opt", "ctrl"],
+              }}
+              title="Stream in Browser"
+              url={`https://real-debrid.com/streaming-${downloadItem?.id}`}
+            />
           </ActionPanel.Submenu>
         </ActionPanel.Section>
       )}
