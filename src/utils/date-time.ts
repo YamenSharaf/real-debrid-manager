@@ -18,7 +18,6 @@ const date_format_options: Intl.DateTimeFormatOptions = {
 type TimestampFormat = "date" | "date_time";
 
 export const formatDateTime = (timestamp?: string, format?: TimestampFormat): string => {
-  console.log("xyz timestamp:", timestamp);
   if (!timestamp) return "Unknown";
   const dateObj = new Date(timestamp);
 
