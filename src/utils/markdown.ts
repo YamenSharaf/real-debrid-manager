@@ -1,15 +1,7 @@
-import {
-  TORRENT_STATUS_MAP,
-  formatDateTime,
-  formatFileSize,
-  formatGenericProperty,
-  formatProgress,
-  isExternalHost,
-  isTorrentCompleted,
-  isTorrentPendingFileSelection,
-} from ".";
+import { formatFileSize, isTorrentCompleted, isTorrentPendingFileSelection } from ".";
 import {
   DownloadFileData,
+  MediaData,
   TorrentItemData,
   TorrentItemDataExtended,
   TrafficData,
@@ -63,17 +55,7 @@ export const readTorrentDetails = (details: TorrentItemData | TorrentItemDataExt
   return `
 # ${details?.filename}
 
-**Progress:** ${formatGenericProperty(formatProgress(details?.progress))}
-
-**Size:** ${formatFileSize(details?.bytes)}
-
-**Host:** ${formatGenericProperty(details.host)}
-
-**Time Added:** ${formatDateTime(details.added)}
-
-**Status:** ${TORRENT_STATUS_MAP[details?.status].title}
-
-${isTorrentCompleted(details.status) ? `💡 To download the file(s), move torrent to downloads first.` : ""}
+${isTorrentCompleted(details.status) ? `💡 To download file(s), move torrent to downloads first.` : ""}
 
 ${
   isTorrentPendingFileSelection(details.status)
@@ -85,22 +67,32 @@ ${readTorrentFilesData(details as TorrentItemDataExtended) || ``}
 `;
 };
 
-export const readDownloadDetails = (details: DownloadFileData) => {
+export const readDownloadDetails = (details: DownloadFileData, youtubeThumbnailUrl?: string | null) => {
   return `
 # ${details?.filename}
 
-**Type:** ${formatGenericProperty(details?.mimeType)}
+${
+  youtubeThumbnailUrl
+    ? `
+![](${youtubeThumbnailUrl})
+`
+    : ""
+}
+`;
+};
 
-**Size:** ${formatFileSize(details?.filesize)}
+export const readStreamingDetails = (details: MediaData, downloadItem: DownloadFileData) => {
+  return `
+# ${details?.filename} ${details.year ? `(${details.year})` : ``}
 
-**Download:** ${formatGenericProperty(details.download)}
+${
+  details.backdrop_path
+    ? `
+![](${details.backdrop_path})
+`
+    : ""
+}
 
-**Host:** ${formatGenericProperty(details.host)}
-
-**Original Link:** ${isExternalHost(details) ? details?.link : formatGenericProperty("")}
-
-**Time Added:** ${formatDateTime(details.generated)}
-
-**Quality:** ${formatGenericProperty(details?.type)}
+**Filename:** ${downloadItem.filename}
 `;
 };

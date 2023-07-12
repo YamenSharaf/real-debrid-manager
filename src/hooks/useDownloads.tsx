@@ -2,6 +2,7 @@ import { useFetch } from "@raycast/utils";
 import { GET_DOWNLOADS, GET_STREAMING_INFO, requestDownloadDelete } from "../api";
 import useToken from "./useToken";
 import { DownloadsData, MediaData } from "../schema";
+import { Toast, showToast } from "@raycast/api";
 
 export const useDownloads = () => {
   const token = useToken();
@@ -14,10 +15,29 @@ export const useDownloads = () => {
     });
   };
 
-  const getStreamingInfo = (download_id: string) => {
+  const getStreamingInfo = (
+    download_id: string,
+    {
+      isPlayable,
+      isYouTube,
+    }: {
+      isPlayable?: boolean;
+      isYouTube?: boolean;
+    } = {}
+  ) => {
     return useFetch<MediaData>(GET_STREAMING_INFO(download_id), {
+      execute: isPlayable && !isYouTube,
       headers: {
         authorization: `Bearer ${token}`,
+      },
+      onWillExecute: async () => {
+        await showToast(Toast.Style.Animated, "Fetching metadata");
+      },
+      onError: async () => {
+        await showToast(Toast.Style.Failure, "No metadata");
+      },
+      onData: async () => {
+        await showToast(Toast.Style.Success, "Metadata found");
       },
     });
   };

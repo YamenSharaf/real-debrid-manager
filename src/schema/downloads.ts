@@ -17,7 +17,7 @@ export type MediaData = {
   filename: string;
   hoster: string;
   link: string;
-  type: "movie" | "show" | "audio";
+  type: keyof typeof MediaType;
   season: string | null;
   episode: string | null;
   year: string | null;
@@ -38,7 +38,16 @@ export type MediaData = {
   poster_path: string;
   audio_image: string;
   backdrop_path: string;
+  availableQualities?: Record<string, string>;
+  availableFormats?: Record<string, string>;
+  modelUrl?: string;
 };
+
+export enum MediaType {
+  "movie" = "Movie",
+  "show" = "TV Show",
+  "audio" = "Audio",
+}
 
 export type VideoDetails = {
   stream: string;

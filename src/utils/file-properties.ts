@@ -15,7 +15,8 @@ export const formatFileSize = (sizeInBytes: number): string => {
 
 export const formatGenericProperty = <T>(value: T): string => {
   if (!value) return "*Unknown*";
-  return String(value);
+  const stringified = String(value);
+  return stringified.charAt(0).toUpperCase() + stringified.slice(1);
 };
 
 export const getFileSizeOrQuality = (downloadData: DownloadFileData) => {

@@ -37,6 +37,24 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
   };
   return (
     <>
+      {isDownloadItemPlayable(downloadItem) && (
+        <ActionPanel.Section>
+          <ActionPanel.Submenu title="Stream">
+            {supportedMediaPlayers.map((player) => (
+              <Action
+                shortcut={{
+                  key: player.key as Keyboard.KeyEquivalent,
+                  modifiers: ["opt", "ctrl"],
+                }}
+                key={player.key}
+                icon={Icon.Play}
+                title={`Stream with ${player.name}`}
+                onAction={() => playWithMediaPlayer(downloadItem.download, player)}
+              />
+            ))}
+          </ActionPanel.Submenu>
+        </ActionPanel.Section>
+      )}
       <ActionPanel.Section>
         <Action.OpenInBrowser url={downloadItem?.download} />
         <Action.CopyToClipboard
@@ -58,21 +76,7 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
           />
         )}
       </ActionPanel.Section>
-      <ActionPanel.Section>
-        {isDownloadItemPlayable(downloadItem) &&
-          supportedMediaPlayers.map((player) => (
-            <Action
-              shortcut={{
-                key: player.key as Keyboard.KeyEquivalent,
-                modifiers: ["opt", "ctrl"],
-              }}
-              key={player.key}
-              icon={Icon.Play}
-              title={`Play with ${player.name}`}
-              onAction={() => playWithMediaPlayer(downloadItem.download, player)}
-            />
-          ))}
-      </ActionPanel.Section>
+
       <ActionPanel.Section>
         <Action
           shortcut={{
