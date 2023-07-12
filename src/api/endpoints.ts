@@ -5,6 +5,7 @@ export const GET_DOWNLOADS = `${API_BASE_URL}/downloads?limit=200`;
 export const GET_TORRENTS = `${API_BASE_URL}/torrents?limit=200`;
 export const ADD_TORRENT_FILE = `${API_BASE_URL}/torrents/addTorrent`;
 export const GET_STATUS = (torrent_id: string) => `${API_BASE_URL}/torrents/info/${torrent_id}`;
+export const GET_STREAMING_INFO = (download_id: string) => `${API_BASE_URL}/streaming/mediaInfos/${download_id}`;
 export const SELECT_FILES = (torrent_id: string) => `${API_BASE_URL}/torrents/selectFiles/${torrent_id}`;
 export const UNRESTRICT_LINK = `${API_BASE_URL}/unrestrict/link`;
 export const UNRESTRICT_MAGNET = `${API_BASE_URL}/torrents/addMagnet`;

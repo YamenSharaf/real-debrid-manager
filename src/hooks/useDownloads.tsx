@@ -1,7 +1,7 @@
 import { useFetch } from "@raycast/utils";
-import { GET_DOWNLOADS, requestDownloadDelete } from "../api";
+import { GET_DOWNLOADS, GET_STREAMING_INFO, requestDownloadDelete } from "../api";
 import useToken from "./useToken";
-import { DownloadsData } from "../schema";
+import { DownloadsData, MediaData } from "../schema";
 
 export const useDownloads = () => {
   const token = useToken();
@@ -14,11 +14,19 @@ export const useDownloads = () => {
     });
   };
 
+  const getStreamingInfo = (download_id: string) => {
+    return useFetch<MediaData>(GET_STREAMING_INFO(download_id), {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+  };
+
   const deleteDownload = (download_id: string) => {
     return requestDownloadDelete(download_id, token);
   };
 
-  return { getDownloads, deleteDownload };
+  return { getDownloads, deleteDownload, getStreamingInfo };
 };
 
 export default useDownloads;
