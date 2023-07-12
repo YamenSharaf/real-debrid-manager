@@ -8,13 +8,46 @@ import {
   isTorrentCompleted,
   isTorrentPendingFileSelection,
 } from ".";
-import { DownloadFileData, TorrentItemData, TorrentItemDataExtended, UserData } from "../schema";
+import {
+  DownloadFileData,
+  TorrentItemData,
+  TorrentItemDataExtended,
+  TrafficData,
+  TrafficReset,
+  TrafficType,
+  UserData,
+} from "../schema";
 
-export const readUserDetails = (details: UserData) => {
+export const readTrafficInfo = (trafficInfo?: TrafficData) => {
+  if (!trafficInfo) return "";
+
+  let markdownTable = `
+# Traffic Information
+
+
+| Domain | Remaining | Limit |
+|--------|------|-------|
+`;
+
+  for (const domain in trafficInfo) {
+    const info = trafficInfo[domain];
+    const leftText = info.type === "links" ? `${info.left} Links` : formatFileSize(info.left);
+    const limitText =
+      info.limit && info.reset ? `${info.limit} ${TrafficType[info.type]} / ${TrafficReset[info.reset]}` : "-";
+
+    markdownTable += `| ${domain === "remote" ? "Remote" : domain} | ${leftText} | ${limitText} |\n`;
+  }
+
+  return markdownTable;
+};
+
+export const readUserDetails = (userInfo: UserData, trafficInfo?: TrafficData) => {
   return `
-# ${details?.username}
+## User: ${userInfo?.username}
     
-![](${details?.avatar})
+![](${userInfo?.avatar})
+
+${readTrafficInfo(trafficInfo)}
 `;
 };
 

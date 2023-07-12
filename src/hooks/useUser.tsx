@@ -1,7 +1,7 @@
 import { useFetch } from "@raycast/utils";
-import { GET_USER } from "../api";
+import { GET_TRAFFIC, GET_USER } from "../api";
 import useToken from "./useToken";
-import { UserData } from "../schema";
+import { TrafficData, UserData } from "../schema";
 
 export const useUser = () => {
   const token = useToken();
@@ -13,8 +13,15 @@ export const useUser = () => {
       },
     });
   };
+  const getTrafficInfo = () => {
+    return useFetch<TrafficData>(GET_TRAFFIC, {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    });
+  };
 
-  return { getUserInfo };
+  return { getUserInfo, getTrafficInfo };
 };
 
 export default useUser;
