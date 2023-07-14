@@ -43,7 +43,7 @@ export const useDownloads = () => {
   };
 
   const deleteDownload = (download_id: string) => {
-    return requestDownloadDelete(download_id, token);
+    return requestDownloadDelete(download_id);
   };
 
   return { getDownloads, deleteDownload, getStreamingInfo };

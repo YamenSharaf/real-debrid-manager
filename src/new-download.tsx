@@ -29,7 +29,7 @@ export const NewDownload = () => {
   };
 
   const handleUnrestrictedTorrent = async (response: UnrestrictTorrentResponse) => {
-    const torrentData = await getTorrentDetails(response?.id);
+    const { data: torrentData } = await getTorrentDetails(response?.id);
     if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
       push(<TorrentFileSelection torrentItemData={torrentData} />);
       showToast(Toast.Style.Success, "Select files for Download");
@@ -77,8 +77,8 @@ export const NewDownload = () => {
     try {
       validateTorrentFile(filePath);
       showToast(Toast.Style.Animated, "Uploading torrent file...");
-      const response = await uploadTorrentFile(filePath);
-      handleUnrestrictedTorrent(response);
+      const { data } = await uploadTorrentFile(filePath);
+      handleUnrestrictedTorrent(data);
     } catch (error) {
       if (error instanceof Error) {
         showToast(Toast.Style.Failure, error.message);
