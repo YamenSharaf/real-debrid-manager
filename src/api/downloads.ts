@@ -1,10 +1,10 @@
 import fetch from "node-fetch";
 
-import { DELETE_DOWNLOAD } from ".";
+import { DOWNLOAD_DELETE } from ".";
 import { ErrorResponse } from "../schema";
 
 export const requestDownloadDelete = async (download_id: string, token: string): Promise<void> => {
-  const response = await fetch(DELETE_DOWNLOAD(download_id), {
+  const response = await fetch(DOWNLOAD_DELETE(download_id), {
     method: "DELETE",
     headers: {
       authorization: `Bearer ${token}`,

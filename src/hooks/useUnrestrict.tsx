@@ -1,27 +1,21 @@
-import { requestSelectFiles, requestUnrestrict } from "../api";
+import { requestUnrestrict } from "../api";
 import useToken from "./useToken";
-import { LinkType } from "../schema";
 
 export const useUnrestrict = () => {
   const token = useToken();
 
-  const unRestrictLink = (link: string, type: LinkType) => {
-    return requestUnrestrict(link, token, type);
+  const unRestrictLink = (link: string) => {
+    return requestUnrestrict(link, token);
   };
 
-  const selectTorrentFiles = (id: string, files?: string) => {
-    return requestSelectFiles(id, token, files);
-  };
-
-  const unRestrictLinks = async (links: string[], type: LinkType) => {
-    const results = await Promise.allSettled(links.map((link) => unRestrictLink(link, type)));
+  const unRestrictLinks = async (links: string[]) => {
+    const results = await Promise.allSettled(links.map((link) => unRestrictLink(link)));
     return results;
   };
 
   return {
     unRestrictLink,
     unRestrictLinks,
-    selectTorrentFiles,
   };
 };
 

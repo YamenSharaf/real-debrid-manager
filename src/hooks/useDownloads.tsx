@@ -1,5 +1,5 @@
 import { useFetch } from "@raycast/utils";
-import { GET_DOWNLOADS, GET_STREAMING_INFO, requestDownloadDelete } from "../api";
+import { DOWNLOADS_GET, DOWNLOAD_GET_STREAMING_INFO, requestDownloadDelete } from "../api";
 import useToken from "./useToken";
 import { DownloadsData, MediaData } from "../schema";
 import { Toast, showToast } from "@raycast/api";
@@ -8,7 +8,7 @@ export const useDownloads = () => {
   const token = useToken();
 
   const getDownloads = () => {
-    return useFetch<DownloadsData>(GET_DOWNLOADS, {
+    return useFetch<DownloadsData>(DOWNLOADS_GET, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -25,7 +25,7 @@ export const useDownloads = () => {
       isYouTube?: boolean;
     } = {}
   ) => {
-    return useFetch<MediaData>(GET_STREAMING_INFO(download_id), {
+    return useFetch<MediaData>(DOWNLOAD_GET_STREAMING_INFO(download_id), {
       execute: isPlayable && !isYouTube,
       headers: {
         authorization: `Bearer ${token}`,

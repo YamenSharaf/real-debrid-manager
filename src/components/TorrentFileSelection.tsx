@@ -3,7 +3,7 @@ import { Action, ActionPanel, Icon, List, Toast, popToRoot, showToast } from "@r
 import { TorrentFile, TorrentItemDataExtended } from "../schema";
 import { formatFileSize } from "../utils";
 import { reducer as fileSelectionReducer } from "../reducers";
-import { useUnrestrict } from "../hooks";
+import { useTorrents } from "../hooks";
 
 type TorrentFileSelectionProps = {
   torrentItemData: TorrentItemDataExtended;
@@ -11,7 +11,7 @@ type TorrentFileSelectionProps = {
 };
 
 export const TorrentFileSelection: React.FC<TorrentFileSelectionProps> = ({ torrentItemData, revalidate }) => {
-  const { selectTorrentFiles } = useUnrestrict();
+  const { selectTorrentFiles } = useTorrents();
 
   const [torrentFiles, dispatch] = useReducer(fileSelectionReducer, torrentItemData?.files as TorrentFile[]);
 

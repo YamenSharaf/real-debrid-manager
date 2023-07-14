@@ -1,18 +1,13 @@
 import fetch from "node-fetch";
 
-import { SELECT_FILES, UNRESTRICT_LINK, UNRESTRICT_MAGNET } from ".";
-import { ErrorResponse, LinkType, UnrestrictLinkResponse } from "../schema";
+import { UNRESTRICT_LINK } from ".";
+import { ErrorResponse, UnrestrictLinkResponse } from "../schema";
 
-export const requestUnrestrict = async (
-  link: string,
-  token: string,
-  type: LinkType = "link"
-): Promise<UnrestrictLinkResponse | void> => {
-  const endpoint = type === "link" ? UNRESTRICT_LINK : UNRESTRICT_MAGNET;
+export const requestUnrestrict = async (link: string, token: string): Promise<UnrestrictLinkResponse> => {
   const params = new URLSearchParams();
-  params.append(type, link);
+  params.append("link", link);
 
-  const response = await fetch(endpoint, {
+  const response = await fetch(UNRESTRICT_LINK, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -26,26 +21,5 @@ export const requestUnrestrict = async (
     throw new Error(`Something went wrong ${error || message || ""}`);
   }
 
-  return (await response.json()) as Promise<UnrestrictLinkResponse | void>;
-};
-
-export const requestSelectFiles = async (id: string, token: string, selectedFiles?: string) => {
-  const params = new URLSearchParams();
-  params.append("files", selectedFiles || "all");
-
-  const response = await fetch(SELECT_FILES(id), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      authorization: `Bearer ${token}`,
-    },
-    body: params,
-  });
-
-  if (!response.ok) {
-    const { message, error } = (await response.json()) as ErrorResponse;
-    throw new Error(`Something went wrong ${error || message || ""}`);
-  }
-
-  return response;
+  return (await response.json()) as Promise<UnrestrictLinkResponse>;
 };

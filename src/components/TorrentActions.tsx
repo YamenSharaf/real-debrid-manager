@@ -1,5 +1,5 @@
 import { Action, ActionPanel, Icon, Toast, showToast, useNavigation } from "@raycast/api";
-import { TorrentItemData, TorrentItemDataExtended } from "../schema";
+import { TorrentItemData } from "../schema";
 import { useTorrents, useUnrestrict } from "../hooks";
 import TorrentFileSelection from "./TorrentFileSelection";
 import { isTorrentCompleted, isTorrentPendingFileSelection } from "../utils";
@@ -21,7 +21,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
       style: Toast.Style.Animated,
       title: "Sending to Downloads",
     });
-    const results = await unRestrictLinks(links, "link");
+    const results = await unRestrictLinks(links);
     const hadErrors = results.find(({ status }) => status === "rejected") as {
       status: string;
       reason?: string;

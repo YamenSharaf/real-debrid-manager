@@ -1,5 +1,12 @@
 import { useFetch } from "@raycast/utils";
-import { GET_TORRENTS, requestAddTorrentFile, requestTorrentDelete, requestTorrentDetails } from "../api";
+import {
+  TORRENTS_GET,
+  requestAddMagnet,
+  requestAddTorrentFile,
+  requestSelectTorrentFiles,
+  requestTorrentDelete,
+  requestTorrentDetails,
+} from "../api";
 import useToken from "./useToken";
 import { TorrentItemData } from "../schema";
 
@@ -7,7 +14,7 @@ export const useTorrents = () => {
   const token = useToken();
 
   const getTorrents = () => {
-    return useFetch<TorrentItemData[]>(GET_TORRENTS, {
+    return useFetch<TorrentItemData[]>(TORRENTS_GET, {
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -26,7 +33,15 @@ export const useTorrents = () => {
     return requestAddTorrentFile(file_path, token);
   };
 
-  return { getTorrents, deleteTorrent, getTorrentDetails, uploadTorrentFile };
+  const addTorrentMagnet = (file_path: string) => {
+    return requestAddMagnet(file_path, token);
+  };
+
+  const selectTorrentFiles = (id: string, files?: string) => {
+    return requestSelectTorrentFiles(id, token, files);
+  };
+
+  return { getTorrents, deleteTorrent, getTorrentDetails, uploadTorrentFile, addTorrentMagnet, selectTorrentFiles };
 };
 
 export default useTorrents;

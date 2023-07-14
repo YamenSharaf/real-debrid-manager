@@ -2,8 +2,8 @@ import { Form, ActionPanel, Action, popToRoot, showToast, Toast, useNavigation }
 import { validateLinkInput, validateTorrentFile } from "./utils/validation";
 import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
-import { UnrestrictLinkResponse, UnrestrictTorrentResponse } from "./schema";
-import { isTorrentPendingFileSelection, isUnrestrictedHosterLink, isUnrestrictedTorrent } from "./utils";
+import { UnrestrictTorrentResponse } from "./schema";
+import { isTorrentPendingFileSelection } from "./utils";
 import { TorrentFileSelection } from "./components";
 
 interface FormValues {
@@ -14,7 +14,7 @@ interface FormValues {
 export const NewDownload = () => {
   const { push } = useNavigation();
   const { unRestrictLink } = useUnrestrict();
-  const { getTorrentDetails, uploadTorrentFile } = useTorrents();
+  const { getTorrentDetails, uploadTorrentFile, addTorrentMagnet } = useTorrents();
   const [linkError, setLinkError] = useState("");
   const [fileSelectError, setFileSelectError] = useState("");
   const [currentInput, setCurrentInput] = useState<"none" | "link" | "torrent">("none");
@@ -92,15 +92,18 @@ export const NewDownload = () => {
       setLinkError(`Not a valid URL or magnet`);
       return;
     }
+
     showToast(Toast.Style.Animated, "Sending link to RD");
     setLinkError("");
     try {
-      const response = (await unRestrictLink(link, type)) as UnrestrictLinkResponse;
-      if (isUnrestrictedTorrent(response)) {
-        handleUnrestrictedTorrent(response);
-      }
-      if (isUnrestrictedHosterLink(response)) {
-        handleSuccess();
+      switch (type) {
+        case "link":
+          unRestrictLink(link);
+          handleSuccess();
+          break;
+        case "magnet":
+          handleUnrestrictedTorrent(await addTorrentMagnet(link));
+          break;
       }
     } catch (error) {
       handleFailure(error as string);

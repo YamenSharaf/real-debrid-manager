@@ -1,6 +1,6 @@
-import { Toast, showToast, useNavigation, Clipboard, getPreferenceValues } from "@raycast/api";
+import { Toast, showToast, Clipboard, getPreferenceValues } from "@raycast/api";
 import { validateLinkInput } from "./utils/validation";
-import { requestUnrestrict } from "./api";
+import { requestAddMagnet, requestUnrestrict } from "./api";
 import { AppPreferences, LinkType } from "./schema";
 
 const getStartMessage = (type: LinkType) => {
@@ -36,7 +36,14 @@ export const addFromClipboard = async () => {
   await showToast(Toast.Style.Animated, getStartMessage(type));
 
   try {
-    await requestUnrestrict(link, token, type);
+    switch (type) {
+      case "link":
+        await requestUnrestrict(link, token);
+        break;
+      case "magnet":
+        await requestAddMagnet(link, token);
+        break;
+    }
 
     await showToast(Toast.Style.Success, getSuccessMessage(type));
   } catch (e) {
