@@ -2,7 +2,7 @@ import fs from "fs";
 import fetch from "node-fetch";
 import { ADD_TORRENT_FILE, DELETE_TORRENT, GET_STATUS } from ".";
 import { ErrorResponse, TorrentItemDataExtended } from "../schema";
-export const requestTorrentDelete = async (torrent_id: string, token: string) => {
+export const requestTorrentDelete = async (torrent_id: string, token: string): Promise<void> => {
   const response = await fetch(DELETE_TORRENT(torrent_id), {
     method: "DELETE",
     headers: {
@@ -14,8 +14,6 @@ export const requestTorrentDelete = async (torrent_id: string, token: string) =>
     const { message, error } = (await response.json()) as ErrorResponse;
     throw new Error(`Something went wrong ${error || message || ""}`);
   }
-
-  return response;
 };
 
 export const requestTorrentDetails = async (torrent_id: string, token: string): Promise<TorrentItemDataExtended> => {

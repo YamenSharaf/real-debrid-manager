@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import { DELETE_DOWNLOAD } from ".";
 import { ErrorResponse } from "../schema";
 
-export const requestDownloadDelete = async (download_id: string, token: string) => {
+export const requestDownloadDelete = async (download_id: string, token: string): Promise<void> => {
   const response = await fetch(DELETE_DOWNLOAD(download_id), {
     method: "DELETE",
     headers: {
@@ -15,6 +15,4 @@ export const requestDownloadDelete = async (download_id: string, token: string) 
     const { message, error } = (await response.json()) as ErrorResponse;
     throw new Error(`Something went wrong ${error || message || ""}`);
   }
-
-  return response;
 };
