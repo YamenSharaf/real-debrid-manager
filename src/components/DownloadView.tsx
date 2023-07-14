@@ -10,7 +10,7 @@ import {
   readStreamingDetails,
 } from "../utils";
 import { DownloadActions } from ".";
-import { useDownloads, useMediaPlayer } from "../hooks";
+import { useStreaming } from "../hooks";
 
 interface DownloadViewProps {
   downloadItem: DownloadFileData;
@@ -18,8 +18,8 @@ interface DownloadViewProps {
 }
 
 export const DownloadView: React.FC<DownloadViewProps> = ({ downloadItem, revalidate }) => {
-  const { getStreamingInfo } = useDownloads();
-  const { isDownloadItemPlayable } = useMediaPlayer();
+  const { getStreamingInfo } = useStreaming();
+  const { isDownloadItemPlayable } = useStreaming();
   const youtubeThumbnail = getYouTubeThumbnail(downloadItem);
 
   const { data: streamingInfo } = getStreamingInfo(downloadItem.id, {

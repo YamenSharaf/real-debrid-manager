@@ -3,11 +3,36 @@ import { usePromise } from "@raycast/utils";
 import { useMemo } from "react";
 import { DownloadFileData, SupportedMediaPlayer } from "../schema";
 import { parseFileType } from "../utils";
+import { requestGetStreamingInfo } from "../api";
 
 const SUPPORTED_PLAYERS = /(iina|vlc|movist|quicktime)/i;
 const SUPPORTED_FILE_TYPES = /(audio|video)/;
 
-export const useMediaPlayer = () => {
+export const useStreaming = () => {
+  const getStreamingInfo = (
+    download_id: string,
+    {
+      isPlayable,
+      isYouTube,
+    }: {
+      isPlayable?: boolean;
+      isYouTube?: boolean;
+    } = {}
+  ) => {
+    return usePromise(requestGetStreamingInfo, [download_id], {
+      execute: isPlayable && !isYouTube,
+      onWillExecute: async () => {
+        await showToast(Toast.Style.Animated, "Fetching metadata");
+      },
+      onError: async () => {
+        await showToast(Toast.Style.Failure, "No metadata");
+      },
+      onData: async () => {
+        await showToast(Toast.Style.Success, "Metadata found");
+      },
+    });
+  };
+
   const { data: apps } = usePromise(async () => {
     const result = await getApplications();
     return result;
@@ -37,6 +62,7 @@ export const useMediaPlayer = () => {
   };
 
   return {
+    getStreamingInfo,
     supportedMediaPlayers,
     playWithMediaPlayer,
     isDownloadItemPlayable,
