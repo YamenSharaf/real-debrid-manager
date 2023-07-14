@@ -1,5 +1,4 @@
 import fs from "fs";
-import fetch from "node-fetch";
 import {
   TORRENT_ADD_FILE,
   TORRENT_DELETE,
@@ -9,7 +8,7 @@ import {
   fetchAxios,
 } from ".";
 import { ErrorResponse, TorrentItemDataExtended, UnrestrictTorrentResponse } from "../schema";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 
 export const requestTorrentDelete = async (torrent_id: string) => {
   const response: AxiosResponse<void> = await fetchAxios.delete(TORRENT_DELETE(torrent_id));
@@ -22,56 +21,53 @@ export const requestTorrentDetails = async (torrent_id: string) => {
   return response;
 };
 
-export const requestAddMagnet = async (magnet_link: string, token: string): Promise<UnrestrictTorrentResponse> => {
+export const requestAddMagnet = async (magnet_link: string) => {
   const params = new URLSearchParams();
   params.append("magnet", magnet_link);
 
-  const response = await fetch(TORRENT_ADD_MAGNET, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      authorization: `Bearer ${token}`,
-    },
-    body: params,
-  });
+  try {
+    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetchAxios.post(
+      TORRENT_ADD_MAGNET,
+      params.toString()
+    );
 
-  if (!response.ok) {
-    const { message, error } = (await response.json()) as ErrorResponse;
+    return response.data;
+  } catch (e) {
+    const axiosError = e as AxiosError<ErrorResponse>;
+    const { message, error } = axiosError?.response?.data as ErrorResponse;
     throw new Error(`Something went wrong ${error || message || ""}`);
   }
-
-  return (await response.json()) as UnrestrictTorrentResponse;
 };
 
 export const requestAddTorrentFile = async (file_path: string) => {
   const file_data = fs.readFileSync(file_path);
 
-  const response: AxiosResponse<UnrestrictTorrentResponse> = await fetchAxios.put(TORRENT_ADD_FILE, file_data, {
-    headers: {
-      "Content-Type": "application/x-bittorrent",
-    },
-  });
+  try {
+    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetchAxios.put(TORRENT_ADD_FILE, file_data, {
+      headers: {
+        "Content-Type": "application/x-bittorrent",
+      },
+    });
 
-  return response;
+    return response.data;
+  } catch (e) {
+    const axiosError = e as AxiosError<ErrorResponse>;
+    const { message, error } = axiosError?.response?.data as ErrorResponse;
+    throw new Error(`Something went wrong ${error || message || ""}`);
+  }
 };
 
-export const requestSelectTorrentFiles = async (id: string, token: string, selected_files?: string) => {
+export const requestSelectTorrentFiles = async (id: string, selected_files?: string) => {
   const params = new URLSearchParams();
   params.append("files", selected_files || "all");
 
-  const response = await fetch(TORRENT_SELECT_FILES(id), {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      authorization: `Bearer ${token}`,
-    },
-    body: params,
-  });
+  try {
+    const response: AxiosResponse<void> = await fetchAxios.post(TORRENT_SELECT_FILES(id), params.toString());
 
-  if (!response.ok) {
-    const { message, error } = (await response.json()) as ErrorResponse;
+    return response;
+  } catch (e) {
+    const axiosError = e as AxiosError<ErrorResponse>;
+    const { message, error } = axiosError?.response?.data as ErrorResponse;
     throw new Error(`Something went wrong ${error || message || ""}`);
   }
-
-  return response;
 };

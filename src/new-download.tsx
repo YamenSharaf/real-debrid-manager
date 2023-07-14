@@ -77,12 +77,10 @@ export const NewDownload = () => {
     try {
       validateTorrentFile(filePath);
       showToast(Toast.Style.Animated, "Uploading torrent file...");
-      const { data } = await uploadTorrentFile(filePath);
-      handleUnrestrictedTorrent(data);
+      const response = await uploadTorrentFile(filePath);
+      handleUnrestrictedTorrent(response);
     } catch (error) {
-      if (error instanceof Error) {
-        showToast(Toast.Style.Failure, error.message);
-      }
+      showToast(Toast.Style.Failure, error as string);
     }
   };
 

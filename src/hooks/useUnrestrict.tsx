@@ -1,11 +1,8 @@
 import { requestUnrestrict } from "../api";
-import useToken from "./useToken";
 
 export const useUnrestrict = () => {
-  const token = useToken();
-
   const unRestrictLink = (link: string) => {
-    return requestUnrestrict(link, token);
+    return requestUnrestrict(link);
   };
 
   const unRestrictLinks = async (links: string[]) => {
