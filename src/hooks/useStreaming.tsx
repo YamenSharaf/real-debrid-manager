@@ -1,7 +1,7 @@
 import { Toast, getApplications, showToast, open } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
 import { useMemo } from "react";
-import { DownloadFileData, SupportedMediaPlayer } from "../schema";
+import { DownloadItemData, SupportedMediaPlayer } from "../schema";
 import { parseFileType } from "../utils";
 import { requestGetStreamingInfo } from "../api";
 
@@ -57,7 +57,7 @@ export const useStreaming = () => {
     }
   };
 
-  const isDownloadItemPlayable = (downloadItem: DownloadFileData) => {
+  const isDownloadItemPlayable = (downloadItem: DownloadItemData) => {
     return Boolean(SUPPORTED_FILE_TYPES.test(parseFileType(downloadItem)));
   };
 

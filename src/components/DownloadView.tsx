@@ -1,5 +1,5 @@
 import { ActionPanel, Color, Detail, Icon } from "@raycast/api";
-import { DownloadFileData, MediaType } from "../schema";
+import { DownloadItemData, MediaType } from "../schema";
 import {
   formatDateTime,
   formatFileSize,
@@ -13,7 +13,7 @@ import { DownloadActions } from ".";
 import { useStreaming } from "../hooks";
 
 interface DownloadViewProps {
-  downloadItem: DownloadFileData;
+  downloadItem: DownloadItemData;
   revalidate: () => void;
 }
 

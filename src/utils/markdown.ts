@@ -1,6 +1,6 @@
 import { formatFileSize, isTorrentCompleted, isTorrentPendingFileSelection } from ".";
 import {
-  DownloadFileData,
+  DownloadItemData,
   MediaData,
   TorrentItemData,
   TorrentItemDataExtended,
@@ -67,7 +67,7 @@ ${readTorrentFilesData(details as TorrentItemDataExtended) || ``}
 `;
 };
 
-export const readDownloadDetails = (details: DownloadFileData, youtubeThumbnailUrl?: string | null) => {
+export const readDownloadDetails = (details: DownloadItemData, youtubeThumbnailUrl?: string | null) => {
   return `
 # ${details?.filename}
 
@@ -81,7 +81,7 @@ ${
 `;
 };
 
-export const readStreamingDetails = (details: MediaData, downloadItem: DownloadFileData) => {
+export const readStreamingDetails = (details: MediaData, downloadItem: DownloadItemData) => {
   return `
 # ${details?.filename} ${details.year ? `(${details.year})` : ``}
 

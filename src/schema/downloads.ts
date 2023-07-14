@@ -1,4 +1,4 @@
-export type DownloadFileData = {
+export type DownloadItemData = {
   id: string;
   filename: string;
   mimeType: string;
@@ -11,7 +11,7 @@ export type DownloadFileData = {
   type?: string; // Optional field
 };
 
-export type DownloadsData = DownloadFileData[];
+export type DownloadsData = DownloadItemData[];
 
 export type MediaData = {
   filename: string;

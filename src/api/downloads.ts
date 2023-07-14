@@ -1,9 +1,9 @@
 import { DOWNLOADS_GET, DOWNLOAD_DELETE, DOWNLOAD_GET_STREAMING_INFO, fetch } from ".";
 import { AxiosResponse } from "axios";
-import { DownloadFileData, MediaData } from "../schema";
+import { DownloadItemData, MediaData } from "../schema";
 import { getPreferenceValues } from "@raycast/api";
 
-export const requestDownloads = async (): Promise<DownloadFileData[]> => {
+export const requestDownloads = async (): Promise<DownloadItemData[]> => {
   const { item_limit } = getPreferenceValues<Preferences>();
 
   const response = await fetch.get(DOWNLOADS_GET, {
