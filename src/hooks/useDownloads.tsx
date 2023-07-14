@@ -1,12 +1,8 @@
 import { usePromise } from "@raycast/utils";
-import { requestDownloadDelete, requestDownloads, requestGetStreamingInfo } from "../api";
+import { requestGetStreamingInfo } from "../api";
 import { Toast, showToast } from "@raycast/api";
 
 export const useDownloads = () => {
-  const getDownloads = () => {
-    return usePromise(requestDownloads);
-  };
-
   const getStreamingInfo = (
     download_id: string,
     {
@@ -31,11 +27,7 @@ export const useDownloads = () => {
     });
   };
 
-  const deleteDownload = (download_id: string) => {
-    return requestDownloadDelete(download_id);
-  };
-
-  return { getDownloads, deleteDownload, getStreamingInfo };
+  return { getStreamingInfo };
 };
 
 export default useDownloads;
