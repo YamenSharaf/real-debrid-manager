@@ -1,5 +1,3 @@
-export const API_BASE_URL = "https://api.real-debrid.com/rest/1.0";
-
 // User Account
 export const USER_GET = `/user`;
 export const TRAFFIC_GET = `/traffic`;
