@@ -10,6 +10,7 @@ import {
 } from ".";
 import { ErrorResponse, TorrentItemData, TorrentItemDataExtended, UnrestrictTorrentResponse } from "../schema";
 import { AxiosError, AxiosResponse } from "axios";
+import { getPreferenceValues } from "@raycast/api";
 
 export const requestTorrentDelete = async (torrent_id: string) => {
   const response: AxiosResponse<void> = await fetch.delete(TORRENT_DELETE(torrent_id));
@@ -17,7 +18,12 @@ export const requestTorrentDelete = async (torrent_id: string) => {
 };
 
 export const requestTorrents = async (): Promise<TorrentItemData[]> => {
-  const response = await fetch.get(TORRENTS_GET);
+  const { item_limit } = getPreferenceValues<Preferences>();
+  const response = await fetch.get(TORRENTS_GET, {
+    data: {
+      limit: item_limit,
+    },
+  });
   return response.data;
 };
 

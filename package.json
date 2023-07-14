@@ -60,6 +60,32 @@
       "title": "Real-Debrid Token",
       "description": "You can find your token at https://real-debrid.com/apitoken",
       "placeholder": "Enter your secure token"
+    },
+    {
+      "name": "item_limit",
+      "type": "dropdown",
+      "required": false,
+      "title": "Items Fetch Limit",
+      "description": "Specify how many torrents/downloads to attempt fetching",
+      "default": "100",
+      "data": [
+        {
+          "title": "50",
+          "value": "50"
+        },
+        {
+          "title": "100",
+          "value": "100"
+        },
+        {
+          "title": "150",
+          "value": "150"
+        },
+        {
+          "title": "200",
+          "value": "200"
+        }
+      ]
     }
   ],
   "dependencies": {
