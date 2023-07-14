@@ -1,8 +1,9 @@
 import { Action, ActionPanel, Icon, Toast, showToast, useNavigation } from "@raycast/api";
 import { TorrentItemData } from "../schema";
-import { useTorrents, useUnrestrict } from "../hooks";
+import { useUnrestrict } from "../hooks";
 import TorrentFileSelection from "./TorrentFileSelection";
 import { isTorrentCompleted, isTorrentPendingFileSelection } from "../utils";
+import { requestTorrentDelete, requestTorrentDetails } from "../api";
 
 type TorrentActionsProp = {
   torrentItem: TorrentItemData;
@@ -12,7 +13,6 @@ type TorrentActionsProp = {
 
 export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, revalidate, popOnSuccess }) => {
   const { pop, push } = useNavigation();
-  const { deleteTorrent, getTorrentDetails } = useTorrents();
   const { unRestrictLinks } = useUnrestrict();
 
   const handleTorrentItemSelect = async (torrentItem: TorrentItemData) => {
@@ -45,7 +45,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
       title: "Deleting torrent...",
     });
     try {
-      await deleteTorrent(id);
+      await requestTorrentDelete(id);
       revalidate();
 
       await showToast({
@@ -63,7 +63,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
 
   const handleFileSelectionRequest = async (id: string) => {
     try {
-      const torrentDetails = await getTorrentDetails(id);
+      const torrentDetails = await requestTorrentDetails(id);
       push(<TorrentFileSelection torrentItemData={torrentDetails} revalidate={revalidate} />);
     } catch (error) {
       await showToast(Toast.Style.Failure, "Failed to Select Files");

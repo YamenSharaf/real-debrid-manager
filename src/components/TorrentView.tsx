@@ -3,7 +3,7 @@ import { TorrentItemData, TorrentItemDataExtended } from "../schema";
 import { TORRENT_STATUS_MAP, formatDateTime, formatFileSize, readTorrentDetails } from "../utils";
 import { TorrentActions } from ".";
 import { useEffect, useState } from "react";
-import { useTorrents } from "../hooks";
+import { requestTorrentDetails } from "../api";
 
 interface TorrentViewProps {
   torrentItem: TorrentItemData;
@@ -11,11 +11,10 @@ interface TorrentViewProps {
 }
 
 export const TorrentView: React.FC<TorrentViewProps> = ({ torrentItem, revalidate }) => {
-  const { getTorrentDetails } = useTorrents();
   const [torrentDataSource, setTorrentDataSource] = useState<TorrentItemData | TorrentItemDataExtended>(torrentItem);
 
   const updateTorrentDetails = async () => {
-    const extendedTorrentData = await getTorrentDetails(torrentItem.id);
+    const extendedTorrentData = await requestTorrentDetails(torrentItem.id);
     setTorrentDataSource(extendedTorrentData);
   };
 

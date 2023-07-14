@@ -1,11 +1,11 @@
 import { Color, Detail } from "@raycast/api";
-import { useUser } from "./hooks";
 import { formatDateTime, getPremiumDaysRemaining, readTrafficInfo } from "./utils";
+import { usePromise } from "@raycast/utils";
+import { requestUserInfo, requestUserTrafficData } from "./api";
 
 export const UserInfo = () => {
-  const { getUserInfo, getTrafficInfo } = useUser();
-  const { data: userInfo, isLoading } = getUserInfo();
-  const { data: trafficInfo } = getTrafficInfo();
+  const { data: userInfo, isLoading } = usePromise(requestUserInfo);
+  const { data: trafficInfo } = usePromise(requestUserTrafficData);
   const isPremium = userInfo?.type === "premium" && userInfo.premium !== 0;
   const remainingPoints = userInfo?.points?.toString() ?? "";
   const premiumRemainingDays = getPremiumDaysRemaining(userInfo?.expiration);

@@ -1,7 +1,8 @@
 import { Action, ActionPanel, Icon, Keyboard, Toast, showToast, useNavigation } from "@raycast/api";
 import { DownloadFileData } from "../schema";
 import { isExternalHost } from "../utils";
-import { useDownloads, useMediaPlayer } from "../hooks";
+import { useMediaPlayer } from "../hooks";
+import { requestDownloadDelete } from "../api";
 
 type DownloadActionsProp = {
   downloadItem: DownloadFileData;
@@ -13,7 +14,6 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
   const { pop } = useNavigation();
 
   const { supportedMediaPlayers, playWithMediaPlayer, isDownloadItemPlayable } = useMediaPlayer();
-  const { deleteDownload } = useDownloads();
 
   const handleDownloadDelete = async ({ id }: DownloadFileData) => {
     await showToast({
@@ -21,7 +21,7 @@ export const DownloadActions: React.FC<DownloadActionsProp> = ({ downloadItem, r
       title: "Deleting download...",
     });
     try {
-      await deleteDownload(id);
+      await requestDownloadDelete(id);
       revalidate();
       await showToast({
         style: Toast.Style.Success,

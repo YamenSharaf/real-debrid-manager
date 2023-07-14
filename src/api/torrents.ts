@@ -6,13 +6,19 @@ import {
   TORRENT_ADD_MAGNET,
   TORRENT_SELECT_FILES,
   fetch,
+  TORRENTS_GET,
 } from ".";
-import { ErrorResponse, TorrentItemDataExtended, UnrestrictTorrentResponse } from "../schema";
+import { ErrorResponse, TorrentItemData, TorrentItemDataExtended, UnrestrictTorrentResponse } from "../schema";
 import { AxiosError, AxiosResponse } from "axios";
 
 export const requestTorrentDelete = async (torrent_id: string) => {
   const response: AxiosResponse<void> = await fetch.delete(TORRENT_DELETE(torrent_id));
   return response;
+};
+
+export const requestTorrents = async (): Promise<TorrentItemData[]> => {
+  const response = await fetch.get(TORRENTS_GET);
+  return response.data;
 };
 
 export const requestTorrentDetails = async (torrent_id: string) => {

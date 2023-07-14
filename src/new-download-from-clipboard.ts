@@ -1,6 +1,6 @@
 import { Toast, showToast, Clipboard } from "@raycast/api";
 import { validateLinkInput } from "./utils/validation";
-import { requestAddMagnet, requestUnrestrict } from "./api";
+import { requestAddMagnet, requestLinkUnrestrict } from "./api";
 import { LinkType } from "./schema";
 
 const getStartMessage = (type: LinkType) => {
@@ -36,7 +36,7 @@ export const addFromClipboard = async () => {
   try {
     switch (type) {
       case "link":
-        await requestUnrestrict(link);
+        await requestLinkUnrestrict(link);
         break;
       case "magnet":
         await requestAddMagnet(link);

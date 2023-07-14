@@ -1,18 +1,10 @@
-import { useFetch } from "@raycast/utils";
-import { DOWNLOADS_GET, DOWNLOAD_GET_STREAMING_INFO, requestDownloadDelete } from "../api";
-import useToken from "./useToken";
-import { DownloadsData, MediaData } from "../schema";
+import { usePromise } from "@raycast/utils";
+import { requestDownloadDelete, requestDownloads, requestGetStreamingInfo } from "../api";
 import { Toast, showToast } from "@raycast/api";
 
 export const useDownloads = () => {
-  const token = useToken();
-
   const getDownloads = () => {
-    return useFetch<DownloadsData>(DOWNLOADS_GET, {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
+    return usePromise(requestDownloads);
   };
 
   const getStreamingInfo = (
@@ -25,11 +17,8 @@ export const useDownloads = () => {
       isYouTube?: boolean;
     } = {}
   ) => {
-    return useFetch<MediaData>(DOWNLOAD_GET_STREAMING_INFO(download_id), {
+    return usePromise(requestGetStreamingInfo, [download_id], {
       execute: isPlayable && !isYouTube,
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
       onWillExecute: async () => {
         await showToast(Toast.Style.Animated, "Fetching metadata");
       },

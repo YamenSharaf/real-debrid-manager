@@ -1,17 +1,12 @@
-import { requestUnrestrict } from "../api";
+import { requestLinkUnrestrict } from "../api";
 
 export const useUnrestrict = () => {
-  const unRestrictLink = (link: string) => {
-    return requestUnrestrict(link);
-  };
-
   const unRestrictLinks = async (links: string[]) => {
-    const results = await Promise.allSettled(links.map((link) => unRestrictLink(link)));
+    const results = await Promise.allSettled(links.map((link) => requestLinkUnrestrict(link)));
     return results;
   };
 
   return {
-    unRestrictLink,
     unRestrictLinks,
   };
 };

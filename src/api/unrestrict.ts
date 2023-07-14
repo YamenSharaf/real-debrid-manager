@@ -3,7 +3,7 @@ import { ErrorResponse, UnrestrictLinkResponse } from "../schema";
 
 import { AxiosResponse, AxiosError } from "axios";
 
-export const requestUnrestrict = async (link: string) => {
+export const requestLinkUnrestrict = async (link: string) => {
   try {
     const response: AxiosResponse<UnrestrictLinkResponse> = await fetch.post(
       UNRESTRICT_LINK,

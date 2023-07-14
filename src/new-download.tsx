@@ -1,10 +1,10 @@
 import { Form, ActionPanel, Action, popToRoot, showToast, Toast, useNavigation } from "@raycast/api";
 import { validateLinkInput, validateTorrentFile } from "./utils/validation";
-import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
 import { UnrestrictTorrentResponse } from "./schema";
 import { isTorrentPendingFileSelection } from "./utils";
 import { TorrentFileSelection } from "./components";
+import { requestAddMagnet, requestAddTorrentFile, requestLinkUnrestrict, requestTorrentDetails } from "./api";
 
 interface FormValues {
   link: string;
@@ -13,8 +13,6 @@ interface FormValues {
 
 export const NewDownload = () => {
   const { push } = useNavigation();
-  const { unRestrictLink } = useUnrestrict();
-  const { getTorrentDetails, uploadTorrentFile, addTorrentMagnet } = useTorrents();
   const [linkError, setLinkError] = useState("");
   const [fileSelectError, setFileSelectError] = useState("");
   const [currentInput, setCurrentInput] = useState<"none" | "link" | "torrent">("none");
@@ -30,7 +28,7 @@ export const NewDownload = () => {
 
   const handleUnrestrictedTorrent = async (response: UnrestrictTorrentResponse) => {
     try {
-      const torrentData = await getTorrentDetails(response?.id);
+      const torrentData = await requestTorrentDetails(response?.id);
       if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
         push(<TorrentFileSelection torrentItemData={torrentData} />);
         await showToast(Toast.Style.Success, "Select files for Download");
@@ -81,7 +79,7 @@ export const NewDownload = () => {
     try {
       validateTorrentFile(filePath);
       showToast(Toast.Style.Animated, "Uploading torrent file...");
-      const response = await uploadTorrentFile(filePath);
+      const response = await requestAddTorrentFile(filePath);
       handleUnrestrictedTorrent(response);
     } catch (error) {
       showToast(Toast.Style.Failure, error as string);
@@ -100,11 +98,11 @@ export const NewDownload = () => {
     try {
       switch (type) {
         case "link":
-          unRestrictLink(link);
+          requestLinkUnrestrict(link);
           handleSuccess();
           break;
         case "magnet":
-          handleUnrestrictedTorrent(await addTorrentMagnet(link));
+          handleUnrestrictedTorrent(await requestAddMagnet(link));
           break;
       }
     } catch (error) {
