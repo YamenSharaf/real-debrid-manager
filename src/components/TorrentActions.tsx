@@ -63,7 +63,7 @@ export const TorrentActions: React.FC<TorrentActionsProp> = ({ torrentItem, reva
 
   const handleFileSelectionRequest = async (id: string) => {
     try {
-      const torrentDetails = (await getTorrentDetails(id)) as TorrentItemDataExtended;
+      const torrentDetails = await getTorrentDetails(id);
       push(<TorrentFileSelection torrentItemData={torrentDetails} revalidate={revalidate} />);
     } catch (error) {
       await showToast(Toast.Style.Failure, "Failed to Select Files");

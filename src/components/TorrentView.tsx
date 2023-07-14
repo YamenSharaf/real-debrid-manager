@@ -15,7 +15,7 @@ export const TorrentView: React.FC<TorrentViewProps> = ({ torrentItem, revalidat
   const [torrentDataSource, setTorrentDataSource] = useState<TorrentItemData | TorrentItemDataExtended>(torrentItem);
 
   const updateTorrentDetails = async () => {
-    const extendedTorrentData = (await getTorrentDetails(torrentItem.id)) as TorrentItemDataExtended;
+    const extendedTorrentData = await getTorrentDetails(torrentItem.id);
     setTorrentDataSource(extendedTorrentData);
   };
 
