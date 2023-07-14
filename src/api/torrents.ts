@@ -31,9 +31,9 @@ export const requestTorrentDetails = async (torrent_id: string, token: string): 
   return (await response.json()) as TorrentItemDataExtended;
 };
 
-export const requestAddMagnet = async (magnetLink: string, token: string): Promise<UnrestrictTorrentResponse> => {
+export const requestAddMagnet = async (magnet_link: string, token: string): Promise<UnrestrictTorrentResponse> => {
   const params = new URLSearchParams();
-  params.append("magnet", magnetLink);
+  params.append("magnet", magnet_link);
 
   const response = await fetch(TORRENT_ADD_MAGNET, {
     method: "POST",
@@ -72,9 +72,9 @@ export const requestAddTorrentFile = async (file_path: string, token: string): P
   return (await response.json()) as UnrestrictTorrentResponse;
 };
 
-export const requestSelectTorrentFiles = async (id: string, token: string, selectedFiles?: string) => {
+export const requestSelectTorrentFiles = async (id: string, token: string, selected_files?: string) => {
   const params = new URLSearchParams();
-  params.append("files", selectedFiles || "all");
+  params.append("files", selected_files || "all");
 
   const response = await fetch(TORRENT_SELECT_FILES(id), {
     method: "POST",
