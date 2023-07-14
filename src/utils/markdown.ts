@@ -94,5 +94,7 @@ ${
 }
 
 ${downloadItem.filename}
+
+💡 This metadata is fetched from Real-Debrid and may not be accurate.
 `;
 };

@@ -1,4 +1,4 @@
-import { ActionPanel, Color, Detail } from "@raycast/api";
+import { ActionPanel, Color, Detail, Icon } from "@raycast/api";
 import { DownloadFileData, MediaType } from "../schema";
 import {
   formatDateTime,
@@ -32,12 +32,11 @@ export const DownloadView: React.FC<DownloadViewProps> = ({ downloadItem, revali
       markdown={readStreamingDetails(streamingInfo, downloadItem)}
       metadata={
         <Detail.Metadata>
-          <Detail.Metadata.Label title="Media Type" text={MediaType[streamingInfo.type]} />
-          {streamingInfo.type === "show" && <Detail.Metadata.Separator />}
+          <Detail.Metadata.Label title="Media Type" icon={Icon.FilmStrip} text={MediaType[streamingInfo.type]} />
           {streamingInfo.type === "show" && (
-            <Detail.Metadata.TagList title="TV Show">
-              <Detail.Metadata.TagList.Item text={`Season ${streamingInfo.season}`} color={Color.Green} />
-              <Detail.Metadata.TagList.Item text={`Episode ${streamingInfo.episode}`} color={Color.Magenta} />
+            <Detail.Metadata.TagList title="">
+              <Detail.Metadata.TagList.Item text={`Season ${streamingInfo.season}`} color={Color.Purple} />
+              <Detail.Metadata.TagList.Item text={`Episode ${streamingInfo.episode}`} color={Color.Green} />
             </Detail.Metadata.TagList>
           )}
           <Detail.Metadata.Separator />
@@ -92,7 +91,11 @@ export const DownloadView: React.FC<DownloadViewProps> = ({ downloadItem, revali
           <Detail.Metadata.Separator />
 
           {downloadItem?.generated && (
-            <Detail.Metadata.Label title="Date Added" text={formatDateTime(downloadItem.generated, "date")} />
+            <Detail.Metadata.Label
+              icon={Icon.Clock}
+              title="Date Added"
+              text={formatDateTime(downloadItem.generated, "date")}
+            />
           )}
         </Detail.Metadata>
       }
