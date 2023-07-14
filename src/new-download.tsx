@@ -29,13 +29,17 @@ export const NewDownload = () => {
   };
 
   const handleUnrestrictedTorrent = async (response: UnrestrictTorrentResponse) => {
-    const { data: torrentData } = await getTorrentDetails(response?.id);
-    if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
-      push(<TorrentFileSelection torrentItemData={torrentData} />);
-      showToast(Toast.Style.Success, "Select files for Download");
-    } else {
-      handleSuccess();
-      return;
+    try {
+      const torrentData = await getTorrentDetails(response?.id);
+      if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
+        push(<TorrentFileSelection torrentItemData={torrentData} />);
+        await showToast(Toast.Style.Success, "Select files for Download");
+      } else {
+        handleSuccess();
+        return;
+      }
+    } catch (error) {
+      await showToast(Toast.Style.Failure, error as string);
     }
   };
   const handleLinkChange = (link: string) => {

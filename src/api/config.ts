@@ -4,9 +4,9 @@ import { getPreferenceValues } from "@raycast/api";
 
 const { api_token } = getPreferenceValues<Preferences>();
 
-export const fetchAxios = axios.create({
+export const fetch = axios.create({
   baseURL: `${API_BASE_URL}/`,
   headers: { authorization: `Bearer ${api_token}` },
 });
 
-export default fetchAxios;
+export default fetch;

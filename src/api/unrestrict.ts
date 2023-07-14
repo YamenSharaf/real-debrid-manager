@@ -1,11 +1,11 @@
-import { UNRESTRICT_LINK, fetchAxios } from ".";
+import { UNRESTRICT_LINK, fetch } from ".";
 import { ErrorResponse, UnrestrictLinkResponse } from "../schema";
 
 import { AxiosResponse, AxiosError } from "axios";
 
 export const requestUnrestrict = async (link: string) => {
   try {
-    const response: AxiosResponse<UnrestrictLinkResponse> = await fetchAxios.post(
+    const response: AxiosResponse<UnrestrictLinkResponse> = await fetch.post(
       UNRESTRICT_LINK,
       { link },
       {

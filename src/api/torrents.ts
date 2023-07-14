@@ -5,20 +5,26 @@ import {
   TORRENT_GET_STATUS,
   TORRENT_ADD_MAGNET,
   TORRENT_SELECT_FILES,
-  fetchAxios,
+  fetch,
 } from ".";
 import { ErrorResponse, TorrentItemDataExtended, UnrestrictTorrentResponse } from "../schema";
 import { AxiosError, AxiosResponse } from "axios";
 
 export const requestTorrentDelete = async (torrent_id: string) => {
-  const response: AxiosResponse<void> = await fetchAxios.delete(TORRENT_DELETE(torrent_id));
+  const response: AxiosResponse<void> = await fetch.delete(TORRENT_DELETE(torrent_id));
   return response;
 };
 
 export const requestTorrentDetails = async (torrent_id: string) => {
-  const response: AxiosResponse<TorrentItemDataExtended> = await fetchAxios.get(TORRENT_GET_STATUS(torrent_id));
+  try {
+    const response: AxiosResponse<TorrentItemDataExtended> = await fetch.get(TORRENT_GET_STATUS(torrent_id));
 
-  return response;
+    return response.data;
+  } catch (e) {
+    const axiosError = e as AxiosError<ErrorResponse>;
+    const { message, error } = axiosError?.response?.data as ErrorResponse;
+    throw new Error(`Something went wrong ${error || message || ""}`);
+  }
 };
 
 export const requestAddMagnet = async (magnet_link: string) => {
@@ -26,10 +32,7 @@ export const requestAddMagnet = async (magnet_link: string) => {
   params.append("magnet", magnet_link);
 
   try {
-    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetchAxios.post(
-      TORRENT_ADD_MAGNET,
-      params.toString()
-    );
+    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetch.post(TORRENT_ADD_MAGNET, params.toString());
 
     return response.data;
   } catch (e) {
@@ -43,7 +46,7 @@ export const requestAddTorrentFile = async (file_path: string) => {
   const file_data = fs.readFileSync(file_path);
 
   try {
-    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetchAxios.put(TORRENT_ADD_FILE, file_data, {
+    const response: AxiosResponse<UnrestrictTorrentResponse> = await fetch.put(TORRENT_ADD_FILE, file_data, {
       headers: {
         "Content-Type": "application/x-bittorrent",
       },
@@ -62,7 +65,7 @@ export const requestSelectTorrentFiles = async (torrent_id: string, selected_fil
   params.append("files", selected_files || "all");
 
   try {
-    const response: AxiosResponse<void> = await fetchAxios.post(TORRENT_SELECT_FILES(torrent_id), params.toString());
+    const response: AxiosResponse<void> = await fetch.post(TORRENT_SELECT_FILES(torrent_id), params.toString());
 
     return response;
   } catch (e) {
