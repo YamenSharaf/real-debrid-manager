@@ -1,13 +1,13 @@
 import { useFetch } from "@raycast/utils";
 import { GET_TORRENTS, requestAddTorrentFile, requestTorrentDelete, requestTorrentDetails } from "../api";
 import useToken from "./useToken";
-import { TorrentData } from "../schema";
+import { TorrentItemData } from "../schema";
 
 export const useTorrents = () => {
   const token = useToken();
 
   const getTorrents = () => {
-    return useFetch<TorrentData>(GET_TORRENTS, {
+    return useFetch<TorrentItemData[]>(GET_TORRENTS, {
       headers: {
         authorization: `Bearer ${token}`,
       },

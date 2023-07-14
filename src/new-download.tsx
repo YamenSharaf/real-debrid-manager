@@ -2,7 +2,7 @@ import { Form, ActionPanel, Action, popToRoot, showToast, Toast, useNavigation }
 import { validateLinkInput, validateTorrentFile } from "./utils/validation";
 import { useTorrents, useUnrestrict } from "./hooks";
 import { useState } from "react";
-import { TorrentItemDataExtended, UnrestrictLinkResponse } from "./schema";
+import { UnrestrictLinkResponse, UnrestrictTorrentResponse } from "./schema";
 import { isTorrentPendingFileSelection, isUnrestrictedHosterLink, isUnrestrictedTorrent } from "./utils";
 import { TorrentFileSelection } from "./components";
 
@@ -28,7 +28,7 @@ export const NewDownload = () => {
     showToast(Toast.Style.Failure, error);
   };
 
-  const handleUnrestrictedTorrent = async (response: UnrestrictLinkResponse) => {
+  const handleUnrestrictedTorrent = async (response: UnrestrictTorrentResponse) => {
     const torrentData = await getTorrentDetails(response?.id);
     if (isTorrentPendingFileSelection(torrentData.status) && torrentData?.files?.length) {
       push(<TorrentFileSelection torrentItemData={torrentData} />);
@@ -78,7 +78,7 @@ export const NewDownload = () => {
       validateTorrentFile(filePath);
       showToast(Toast.Style.Animated, "Uploading torrent file...");
       const response = await uploadTorrentFile(filePath);
-      handleUnrestrictedTorrent(response as UnrestrictLinkResponse);
+      handleUnrestrictedTorrent(response);
     } catch (error) {
       if (error instanceof Error) {
         showToast(Toast.Style.Failure, error.message);
