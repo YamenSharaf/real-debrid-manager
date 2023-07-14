@@ -57,12 +57,12 @@ export const requestAddTorrentFile = async (file_path: string) => {
   }
 };
 
-export const requestSelectTorrentFiles = async (id: string, selected_files?: string) => {
+export const requestSelectTorrentFiles = async (torrent_id: string, selected_files?: string) => {
   const params = new URLSearchParams();
   params.append("files", selected_files || "all");
 
   try {
-    const response: AxiosResponse<void> = await fetchAxios.post(TORRENT_SELECT_FILES(id), params.toString());
+    const response: AxiosResponse<void> = await fetchAxios.post(TORRENT_SELECT_FILES(torrent_id), params.toString());
 
     return response;
   } catch (e) {

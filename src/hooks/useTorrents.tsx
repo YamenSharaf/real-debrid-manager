@@ -22,23 +22,23 @@ export const useTorrents = () => {
   };
 
   const getTorrentDetails = (id: string) => {
-    return requestTorrentDetails(id, token);
+    return requestTorrentDetails(id);
   };
 
   const deleteTorrent = (torrent_id: string) => {
-    return requestTorrentDelete(torrent_id, token);
+    return requestTorrentDelete(torrent_id);
   };
 
   const uploadTorrentFile = (file_path: string) => {
-    return requestAddTorrentFile(file_path, token);
+    return requestAddTorrentFile(file_path);
   };
 
   const addTorrentMagnet = (file_path: string) => {
-    return requestAddMagnet(file_path, token);
+    return requestAddMagnet(file_path);
   };
 
-  const selectTorrentFiles = (id: string, files?: string) => {
-    return requestSelectTorrentFiles(id, token, files);
+  const selectTorrentFiles = (torrent_id: string, files?: string) => {
+    return requestSelectTorrentFiles(torrent_id, files);
   };
 
   return { getTorrents, deleteTorrent, getTorrentDetails, uploadTorrentFile, addTorrentMagnet, selectTorrentFiles };
